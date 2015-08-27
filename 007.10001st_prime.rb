@@ -3,6 +3,7 @@
 # that the 6th prime is 13.
 # What is the 10001st prime number?
 #
+# benchmark shows this program takes 13 seconds
 require 'benchmark'
 
 def prime?(number)

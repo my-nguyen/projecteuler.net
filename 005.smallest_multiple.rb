@@ -41,7 +41,7 @@ array10 = []
 10.times do |i|
   array10[i] = i+1
 end
-# puts("LCM(1..10): #{lcm_array(array10)}")
+puts("LCM(1..10): #{lcm_array(array10)}")
 array20 = []
 20.times do |i|
   array20[i] = i+1
