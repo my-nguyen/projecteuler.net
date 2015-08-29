@@ -40,16 +40,23 @@ def find_divisors(number)
   end
 end
 
+divisors = []
 triangles = [1]
-natural = 2
-while natural <= 100
-  triangles << triangles[natural-2] + natural
-  natural += 1
-end
-print_array triangles
-
-triangles.each do |triangle|
-  divisors = find_divisors(triangle)
-  puts("triangle: #{triangle}, divisors:")
-  print_array divisors
+number = 2
+limit = 1
+while limit < 500
+  while divisors.size <= limit
+    triangle = triangles[number-2] + number
+    triangles << triangle
+    divisors = find_divisors(triangle)
+=begin
+    print("number: #{number}, triangle: #{triangle}=>")
+    print_array triangles
+    puts("divisors:")
+    print_array divisors
+=end
+    number += 1
+  end
+  puts("First that reach #{divisors.size}: number #{number-1}, triangle #{triangle}")
+  limit = divisors.size + 1
 end
