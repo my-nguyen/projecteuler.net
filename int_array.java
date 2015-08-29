@@ -8,6 +8,10 @@ class int_array
 
   public void sort() { Collections.sort(_vector); }
 
+  public int size() { return _vector.size(); }
+
+  public int at(int index) { return _vector.get(index); }
+
   public int sum()
   {
     int sum = 0;

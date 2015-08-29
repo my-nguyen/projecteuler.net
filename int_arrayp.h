@@ -12,6 +12,10 @@ public:
 
   void sort() { std::sort(_vector.begin(), _vector.end()); }
 
+  int size() { return _vector.size(); }
+
+  int operator[](int index) { return _vector.at(index); }
+
   int sum()
   {
     int sum = 0;

@@ -1,6 +1,6 @@
 // Refer to 001.multiples_of_3_and_5.rb for clarifying comments.
 // Be sure to compile with g++ not gcc
-#include "int_array.h"
+#include "int_arrayp.h"
 
 int main()
 {
