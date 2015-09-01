@@ -22,22 +22,27 @@ def print_array numbers
   puts
 end
 
+# find all divisors of a target number
 def find_divisors(number)
-  if number == 1
-    divisors = [1]
-  else
-    divisors = [1]
+  # 1 is always a divisor
+  divisors = [1]
+  if number > 1
+    # number is also always a divisor
+    divisors << number
+    # start looking for other divisors from 2 on up.
     i = 2
-    sqrt = Math.sqrt(number).to_i
-    while (i <= sqrt)
+    while (i <= Math.sqrt(number).to_i)
+      # if number is evenly divisible by i, then retain i, and possibly also
+      # the division of number/i.
       if (number % i == 0)
         divisors << i
         divisors << number/i if (i != number/i)
       end
       i += 1
     end
-    (divisors << number).sort!
+    divisors.sort!
   end
+  divisors
 end
 
 divisors = []

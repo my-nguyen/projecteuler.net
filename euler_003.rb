@@ -2,63 +2,29 @@
 # The prime factors of 13195 are 5, 7, 13 and 29
 # What is the largest prime factor of the number 600851475143?
 #
-def prime?(number)
-  case number
-  # 1 is not a prime number
-  when 1
-    return false
-  # 2 is a prime number
-  when 2
-    return true
-  else
-    # an even number larger than 2 is not a prime number
-    if number % 2 == 0
-      return false
+# In other words: Given a number, find the largest divisor that is also a prime
+#
+
+def largest_prime(target)
+  prime = 2
+  while (target > prime)
+    # if target is divisible by the current prime, then keep dividing
+    # target by the current prime
+    if (target % prime == 0)
+      target /= prime
+    # otherwise move on to the next number
     else
-      # only seach up to half the test number
-      2.upto(number/2) do |n|
-        if (number % n == 0)
-           return false
-        end
-      end
-      return true
+      prime += 1
     end
   end
+  prime
 end
 
-def factors(number)
-  # larray contains all factors to the left, and rarray all factors to the right
-  larray = Array.new
-  rarray = Array.new
-  # default factors are 1 and the test number itself
-  lfactor = 1
-  rfactor = number
-
-  while (lfactor < rfactor)
-    # found a factor
-    if number % lfactor == 0
-      rfactor = number / lfactor
-      # save the 2 factors
-      larray << lfactor
-      rarray.insert(0, rfactor)
-    end
-    lfactor += 1
-  end
-
-  # result is the combination of all factors on the left and right
-  return larray + rarray
+targets = [13915, 475143, 1475143, 51475143, 1851475143, 10851475143, 600851475143]
+# targets = [851475143]
+# targets = [3239, 16843009, 13915, 475143]
+targets.each do |target|
+  # puts("Factors of #{target}: #{divisors}")
+  # puts("Largest prime factor of #{target}: #{largest_prime(divisors)}")
+  puts("target: #{target}, largest prime: #{largest_prime(target)}")
 end
-
-def largest_prime(factors)
-  factors.reverse_each do |n|
-    if prime?(n)
-      return n
-    end
-  end
-end
-
-print("Enter a number: ")
-number = gets.to_i
-puts("#{number} is #{ prime?(number) ? '' : 'not ' }prime")
-puts("FACTORS of #{number}: #{factors(number)}")
-puts("Largest prime factor of #{number}: #{largest_prime(factors(number))}")

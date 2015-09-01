@@ -3,7 +3,7 @@
 int main()
 {
   int limits[] = {10, 100, 1000, 10000, 100000, 1000000, 2000000, 4000000};
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < sizeof(limits)/sizeof(int); i++)
   {
     int_array fibs;
     fibs.push(1);

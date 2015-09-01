@@ -5,7 +5,7 @@
 int main()
 {
   int limits[] = {10, 20, 100, 500, 1000};
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < sizeof(limits)/sizeof(int); i++)
   {
     int_array multiples;
     int highest_3 = (limits[i]-1) / 3;

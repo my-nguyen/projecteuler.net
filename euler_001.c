@@ -7,7 +7,7 @@ void main()
 {
   int limits[] = {10, 20, 100, 500, 1000};
   int i;
-  for (i = 0; i < 5; i++)
+  for (i = 0; i < sizeof(limits)/sizeof(int); i++)
   {
     int multiples[1000];
     int size = 0;

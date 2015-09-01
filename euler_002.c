@@ -5,7 +5,7 @@ void main()
 {
   int limits[] = {10, 100, 1000, 10000, 100000, 1000000, 2000000, 4000000};
   int i;
-  for (i = 0; i < 8; i++)
+  for (i = 0; i < sizeof(limits)/sizeof(int); i++)
   {
     int fibs[40];
     fibs[0] = 1;

@@ -4,7 +4,7 @@ class euler_002
   public static void main(String[] args)
   {
     int[] limits = {10, 100, 1000, 10000, 100000, 1000000, 2000000, 4000000};
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < limits.length; i++)
     {
       int_array fibs = new int_array();
       fibs.push(1);
