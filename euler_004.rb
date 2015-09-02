@@ -16,34 +16,41 @@ def palindrome?(number)
   return i >= string.length/2
 end
 
-def largest(digit_count)
-  # max values for each digit; assuming we don't work beyond a 3-digit number
-  max = [9, 99, 999]
-  # an array that stores a number of palindromes found, so that its largest
-  # palindrome will be returned later
-  pals = []
-
-  # start with left = max, decreasing and looping 9 times
-  left = max[digit_count-1]
-  9.times do
-    # start with right = left
-    right = left
-    while (right >= 1)
-      # if a palindrome is found for the product of left and right, then store
-      # that palindrome in an array, so that its largest value will be returned
-      if (palindrome?(left * right))
-        pals << left*right
-        break
-      end
-      right -= 1
-    end
-    left -= 1
+# find the reverse of a number. this method is flawed: if the original number
+# has trailing zeroes, then those zeroes won't appear in the reversed number.
+def reverse(number)
+  other = 0
+  while number != 0
+    other = other*10 + number%10
+    number /= 10
   end
-
-  # return the largest value in the palindrome array
-  return pals.sort.last
+  other
 end
 
-1.upto(3) do |n|
-  puts("Largest #{n}-digit: #{largest(n)}")
+def palindrome2?(number)
+  number == reverse(number)
+end
+
+# find the largest palindrome found in all products of 1-digit, 2-digit and
+# 3-digit numbers
+def largest_palindrome_product(target)
+  max = 1
+  result = []
+  # use 2 indices: upper starts from target down to 1, and lower starts from upper
+  # down to 1
+  target.downto(1) do |upper|
+    upper.downto(1) do |lower|
+      product = upper * lower
+      if (palindrome2?(product) && product > max)
+        max = product
+        result = [lower, upper, product]
+      end
+    end
+  end
+  result
+end
+
+targets = [9, 99, 999, 9999]
+targets.each do |target|
+  puts("Largest #{target.to_s.size}-digit: #{largest_palindrome_product(target)}")
 end
