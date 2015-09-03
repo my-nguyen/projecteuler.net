@@ -1,8 +1,9 @@
 # test up to 1 million only
 targets = [10, 100, 1000, 10000, 100000, 1000000]
 targets = [13915, 475143, 1475143, 51475143, 851475143, 1851475143, 10851475143, 600851475143]
+# 851475143 is a troublesome number for filling in prime numbers
 targets = [851475143]
-targets = [1475143, 51475143]
+targets = [13915, 475143, 1475143, 51475143]
 targets.each do |target|
   # Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
   # up to a target number
@@ -24,15 +25,4 @@ targets.each do |target|
   end
 
   puts("target: #{target}, highest prime: #{primes.rindex(true)}")
-=begin
-  j = 1
-  2.upto(primes.size) do |i|
-    if primes[i]
-      print(" #{i}")
-      puts if (j % 10 == 0)
-      j += 1
-    end
-  end
-  puts
-=end
 end

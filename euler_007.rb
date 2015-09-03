@@ -3,34 +3,46 @@
 # that the 6th prime is 13.
 # What is the 10001st prime number?
 #
-# benchmark shows this program takes 13 seconds
-require 'benchmark'
-
-def prime?(number)
-  # only consider odd divisors from 3 up to half the test number
-  (3..(number/2)).step(2) do |n|
-    if (number % n == 0)
-       return false
+# Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
+# up to a target number
+# This algorithm proves to be a vast improvement on my older prime-finding
+# algorithm: while the older version took 13 seconds, this new version took
+# less than 1 second.
+# This method finds all prime numbers from 2 up to size and stores them in an
+# array, with prime numbers represented as ON bit and non-prime as OFF
+def get_primes()
+  primes = Array.new(SIZE, true)
+  # start with 2, the very first prime number
+  2.upto(SIZE) do |index|
+    # only consider prime numbers
+    if primes[index]
+      multiple = 2
+      while (index*multiple <= SIZE)
+        # all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes
+        primes[index*multiple] = false
+        multiple += 1
+      end
     end
   end
-  true
+  primes
 end
 
-def nth_prime(max)
-  # only consider numbers greater than 3
-  i = 3
-  # first two prime numbers (2 and 3) are already accounted for
-  prm = 2
-  time = Benchmark.realtime do
-    while (prm < max)
-      # only consider odd numbers
-      i += 2
-      prm += 1 if prime?(i)
-    end
+# this method converts an array of booleans, where ON elements represent prime
+# numbers and OFF otherwise, into an array of prime numbers
+def pack_primes(primes)
+  result = []
+  primes.each_index do |i|
+    result << i if primes[i]
   end
-  time = time.to_i
-  puts "Time: #{time/60} minutes #{time%60} seconds"
-  i
+  result
 end
 
-puts("prime(10001): #{nth_prime(10001)}")
+# reverse engineer: since I already solved this problem using a not-so-efficient
+# algorithm to find primes (which took 13 seconds), I know the answer to be
+# 104743, so I just have to declare array size as 105000
+SIZE = 105000
+primes = pack_primes(get_primes)
+targets = [6, 11, 101, 1001, 10001]
+targets.each do |target|
+  puts("prime(#{target}): #{primes[target+1]}")
+end
