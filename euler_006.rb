@@ -24,7 +24,7 @@ def square_sum(max)
   sum ** 2
 end
 
-n = 10
-puts("Difference(#{n}): #{square_sum(n) - sum_squares(n)}")
-n = 100
-puts("Difference(#{n}): #{square_sum(n) - sum_squares(n)}")
+targets = [10, 50, 100]
+targets.each do |target|
+  puts("Difference(#{target}): #{square_sum(target) - sum_squares(target)}")
+end
