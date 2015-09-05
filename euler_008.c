@@ -1,95 +1,104 @@
 #include <stdio.h>
 #include <string.h>
 
-// this method returns a sub-array of the 'source' array, starting from 'start'
-// for 'length' elements
-int* arr_sub(int source[], int start, int length, int dest[])
+#define MAX_SLICE 13
+struct slice_t
 {
-  int i;
-  for (i = 0; i < length; i++)
-  {
-    dest[i] = source[start];
-    start += 1;
-  }
-  return dest;
-}
+  int _data[MAX_SLICE];
+  int _size;
+};
+typedef struct slice_t slice_t;
 
-// this method finds target in an array; if target is found, it returns the index
-// of the target, if not it returns a 0
-int arr_find(int array[], int size, int target)
+// this method looks for target in an array; if target is found, it returns the
+// index of the target, if not it returns a 0
+int find(slice_t* slice, int target)
 {
   int i;
-  for (i = 0; i < size; i++)
-    if (array[i] == target)
+  for (i = 0; i < slice->_size; i++)
+    if (slice->_data[i] == target)
       return i;
   return 0;
 }
 
 // this method returns the product of all integers contained in array
-long arr_product(int array[], int size)
+long product(slice_t* slice)
 {
-  long product = 1;
+  long result = 1;
   int i;
-  for (i = 0; i < size; i++)
-    product *= array[i];
-  return product;
+  for (i = 0; i < slice->_size; i++)
+    result *= slice->_data[i];
+  return result;
 }
 
 // this method copies an array from source to dest
-int* arr_copy(int source[], int size, int dest[])
+slice_t* copy(slice_t* source, slice_t* dest)
 {
   int i;
-  for (i = 0; i < size; i++)
-    dest[i] = source[i];
+  for (i = 0; i < source->_size; i++)
+    dest->_data[i] = source->_data[i];
   return dest;
 }
 
 // this method converts an array of integers into a printable string format
-char* arr_tostring(int array[], int size, char string[])
+char* tostring(slice_t* slice, char string[])
 {
   strcpy(string, "[");
   int i;
-  for (i = 0; i < size; i++)
+  for (i = 0; i < slice->_size; i++)
   {
     if (i)
       strcat(string, ", ");
-    sprintf(string+strlen(string), "%d", array[i]);
+    sprintf(string+strlen(string), "%d", slice->_data[i]);
   }
   return strcat(string, "]");
 }
 
+// this method returns a sub-array of the 'source' array, starting from 'start'
+// for 'length' elements
+slice_t* subarray(int digits[], int start, int length, slice_t* slice)
+{
+  int i;
+  for (i = 0; i < length; i++)
+  {
+    slice->_data[i] = digits[start];
+    start += 1;
+  }
+  slice->_size = length;
+  return slice;
+}
+
 #define MAX_DIGITS 1000
-#define MAX_SLICE 13
 // this method returns the adjacent digits of 'length' whose product is the
 // largest product among all the adjacent digits within the array 'digits'
-int* max_product(int digits[], int length, int result[])
+slice_t* max_product(int digits[], int length, slice_t* result)
 {
   long max = 0;
   int start = 0;
   while (start+length <= MAX_DIGITS)
   {
     // take a slice of length (4 or 13) digits
-    int slice[MAX_SLICE];
-    arr_sub(digits, start, length, slice);
+    slice_t slice;
+    subarray(digits, start, length, &slice);
     // if the slice contains 0, then skip to the next slice beyond the 0,
     // because a product of anything and 0 is 0.
     int index;
-    if (index = arr_find(slice, length, 0))
+    if (index = find(&slice, 0))
       start += index + 1;
     else
     {
       // calculate the product of all digits in the slice
-      long product = arr_product(slice, length);
+      long produit = product(&slice);
       // reset max if necessary
-      if (product > max)
+      if (produit > max)
       {
-        max = product;
-        arr_copy(slice, length, result);
+        max = produit;
+        copy(&slice, result);
       }
       // move on to the next slice
       start += 1;
     }
   }
+  result->_size = length;
   return result;
 }
 
@@ -113,9 +122,9 @@ void main()
   int i;
   for (i = 0; i < sizeof(lengths)/sizeof(int); i++)
   {
-    int slice[MAX_SLICE];
-    max_product(digits, lengths[i], slice);
+    slice_t slice;
+    max_product(digits, lengths[i], &slice);
     char print[100];
-    printf("max of %d: %ld from %s\n", lengths[i], arr_product(slice, lengths[i]), arr_tostring(slice, lengths[i], print));
+    printf("max of %d: %ld from %s\n", lengths[i], product(&slice), tostring(&slice, print));
   }
 }
