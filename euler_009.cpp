@@ -28,7 +28,7 @@ int compare(const void* left, const void* right)
   return *((const int*)left) - *((const int*)right);
 }
 
-#define TRIPLET 3
+const int TRIPLET = 3;
 // This method returns a pythagorean triplet [a, b, c] if such a triplet is found.
 // if not it returns nil.
 int* pythagorean_triplets(int target, int triplet[])
