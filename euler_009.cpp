@@ -11,9 +11,10 @@
 // a = m*m - n*n
 // b = 2*m*n
 // c = m*m + n*n
-#include <stdio.h>
-#include <math.h>   // sqrt(), abs()
-#include <string.h>
+#include <iostream>
+#include <cmath>   // sqrt(), abs()
+#include <cstdlib> // qsort()
+using namespace std;
 
 // This method returns the sum of a+b+c
 // a + b + c = m*m - n*n + 2*m*n + m*m + n*n, or 2*m*(m+n)
@@ -77,41 +78,35 @@ int* pythagorean_triplets(int target, int triplet[])
 int product(int triplet[])
 {
   int prod = 1;
-  int i;
-  for (i = 0; i < TRIPLET; i++)
+  for (int i = 0; i < TRIPLET; i++)
     prod *= triplet[i];
   return prod;
 }
 
 // this method converts an array of 3 integers into a printable string format
-char* tostring(int triplet[], char string[])
+ostream& operator<<(ostream& out, int triplet[])
 {
-  strcpy(string, "[");
-  int i;
-  for (i = 0; i < TRIPLET; i++)
+  out << "[";
+  for (int i = 0; i < TRIPLET; i++)
   {
     if (i)
-      strcat(string, ", ");
-    sprintf(string+strlen(string), "%d", triplet[i]);
+      out << ", ";
+    out << triplet[i];
   }
-  return strcat(string, "]");
+  return out << "]";
 }
 
-void main()
+int main()
 {
   int targets[] = {50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
-  int i;
-  for (i = 0; i < sizeof(targets)/sizeof(int); i++)
+  for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
   {
     int triplet[TRIPLET];
     int* result = pythagorean_triplets(targets[i], triplet);
-    printf("triplet(%d): ", targets[i]);
+    cout << "triplet(" << targets[i] << "): ";
     if (result == NULL)
-      printf("none found\n");
+      cout << "none found" << endl;
     else
-    {
-      char print[30];
-      printf("product %d from %s\n", product(triplet), tostring(triplet, print));
-    }
+      cout << "product " << product(triplet) << " from " << triplet << endl;
   }
 }
