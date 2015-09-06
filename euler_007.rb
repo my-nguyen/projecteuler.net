@@ -11,7 +11,13 @@
 # This method finds all prime numbers from 2 up to size and stores them in an
 # array, with prime numbers represented as ON bit and non-prime as OFF
 def get_primes()
-  primes = Array.new(SIZE, true)
+  # first initialize all elements in array to TRUE
+  primes = Array.new(SIZE+1, true)
+
+  # numbers 0 and 1 are not primes
+  primes[0] = false
+  primes[1] = false
+
   # start with 2, the very first prime number
   2.upto(SIZE) do |index|
     # only consider prime numbers
