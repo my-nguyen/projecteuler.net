@@ -56,8 +56,8 @@ end
 targets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
 # targets = [200, 500, 1000]
 targets.each do |target|
-  triplet = pythagorean_triplets(target)
   print("triplet(#{target}): ")
+  triplet = pythagorean_triplets(target)
   if triplet.nil?
     puts("none found")
   else
