@@ -126,7 +126,6 @@ int main()
   for (int i = 0; i < sizeof(lengths)/sizeof(int); i++)
   {
     slice_t slice = max_product(digits, lengths[i]);
-    cout << "max of " << lengths[i] << ": " << slice.product() << " from ";
-    cout << slice << endl;
+    cout << "max of " << lengths[i] << ": " << slice.product() << " from " << slice << endl;
   }
 }
