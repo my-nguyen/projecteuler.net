@@ -4,13 +4,13 @@
 #
 # The Sieve of Eratosthenes algorithm developed in Euler #7 was used here to
 # yield marvelous result:
-# Prime below     Sum             Pre-Sieve     Post-Sieve
-# 10              17              0
-# 100000          454396537       12
-# 500000          9914236195      274
-# 1000000         37550402023     1007
-# 1500000         82074443256     2201
-# 2000000         142913828922    3850
+# Target      Sum             Pre-Sieve     Post-Sieve
+# 10          17              0             0
+# 100000      454396537       12            .05
+# 500000      9914236195      274           .24
+# 1000000     37550402023     1007          .47
+# 1500000     82074443256     2201          .72
+# 2000000     142913828922    3850          .97
 #
 def get_primes(target)
   primes = Array.new(target+1, true)
@@ -45,7 +45,6 @@ def pack_primes(primes)
 end
 
 targets = [10, 100000, 500000, 1000000, 1500000, 2000000]
-# targets = [100000]
 targets.each do |target|
   primes = pack_primes(get_primes(target))
   puts("Sum primes(#{target}): #{primes.reduce(:+)}")
