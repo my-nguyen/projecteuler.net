@@ -1,5 +1,5 @@
-#ifndef BIT_FIELD_H
-#define BIT_FIELD_H
+#ifndef BITFIELD_C_H
+#define BITFIELD_C_H
 
 #define BITS_PER_BYTE 8
 #define BITS_PER_LONG (sizeof(long)*BITS_PER_BYTE)

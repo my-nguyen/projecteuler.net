@@ -1,70 +1,15 @@
-// Euler 7, in C++, version B: replaced array with vector in version A
+// Euler 7, in C++, version C: replaced user-defined class bitfield with
+// boost::dynamic_bitset
 #include <iostream>
 #include <vector>
+#include <boost/dynamic_bitset.hpp>
 using namespace std;
-const int BITS_PER_BYTE = 8;
-const int BITS_PER_LONG = (sizeof(long)*BITS_PER_BYTE);
 
-class bitfield
+void bitset_print(const boost::dynamic_bitset<>& field)
 {
-public:
-  bitfield(int size);
-
-  ~bitfield() { }
-
-  void print(unsigned long field);
-
-  void clear(int long_index)
-  { _field[byte_index(long_index)] &= ~(1l << bit_index(long_index)); }
-
-  void set(int long_index)
-  { _field[byte_index(long_index)] |= (1l << bit_index(long_index)); }
-
-  unsigned long test(int long_index) const
-  { return _field[byte_index(long_index)] & (1l << bit_index(long_index)); }
-
-  int space() const { return _space; }
-
-private:
-  char* decimal2binary(long decimal, char binary[]);
-  int byte_index(int long_index) const { return long_index / BITS_PER_LONG; }
-  int bit_index(int long_index) const { return long_index % BITS_PER_LONG; }
-
-  vector<unsigned long> _field;
-  int _space;
-};
-
-bitfield::bitfield(int size) :
-  // initialize all bits to ON
-  _field(((size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0)), 0xFFFFFFFFFFFFFFFF),
-  _space(size)
-{
-  // use an array of unsigned long to represent the array of booleans (bits).
-  // each long contains 64 bits.
-  int long_count = (size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0);
-/*
-  cout << "space required: " << size << ", which fits in " << long_count
-      << " long's, or " << (long_count*BITS_PER_LONG) << " bits" << endl;
-*/
-}
-
-// This method converts a long integer in decimal base to a binary string.
-char* bitfield::decimal2binary(long decimal, char binary[])
-{
-  for (int i = 0; i < BITS_PER_LONG; i++)
-  {
-    binary[i] = (decimal & 1 ? '1' : '0');
-    decimal >>= 1;
-  }
-  return binary;
-}
-
-// this method prints out all 64 bits in an unsigned long bitfield
-void bitfield::print(unsigned long field)
-{
-  char binary[BITS_PER_LONG+1];
-  binary[BITS_PER_LONG] = '\0';
-  cout << decimal2binary(field, binary) << endl;
+  for (int i = 0; i < field.size(); i++)
+    cout << field[i];
+  cout << endl;
 }
 
 // Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
@@ -74,24 +19,24 @@ void bitfield::print(unsigned long field)
 // less than 1 second.
 // This method finds all prime numbers from 2 up to size and stores them in an
 // array, with prime numbers represented as ON bit and non-prime as OFF
-void get_primes(bitfield* field)
+void get_primes(boost::dynamic_bitset<>* field)
 {
   // numbers 0 and 1 are not primes
-  field->clear(0);
-  field->clear(1);
+  field->reset(0);
+  field->reset(1);
 
   // start with 2, the very first prime number
-  for (int i = 2; i < field->space(); i++)
+  for (int i = 2; i < field->size(); i++)
   {
     // test whether bit at i is ON
     if (field->test(i))
     {
       int multiple = 2;
-      while (i*multiple <= field->space())
+      while (i*multiple < field->size())
       {
         // all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes.
         // So turn off bit at (i*multiple)th position.
-        field->clear(i*multiple);
+        field->reset(i*multiple);
         multiple += 1;
       }
     }
@@ -100,9 +45,9 @@ void get_primes(bitfield* field)
 
 // this method converts an array of booleans, where ON elements represent prime
 // numbers and OFF otherwise, into an array of prime numbers
-void pack_primes(const bitfield& field, vector<int>* primes)
+void pack_primes(const boost::dynamic_bitset<>& field, vector<int>* primes)
 {
-  for (int i = 0; i < field.space(); i++)
+  for (int i = 0; i < field.size(); i++)
     if (field.test(i))
       primes->push_back(i);
 }
@@ -136,7 +81,9 @@ int main()
   {
     // First, obtain all prime numbers up to space. The prime numbers are ON bits
     // while the non-prime numbers are OFF bits.
-    bitfield field(targets[i].space);
+    boost::dynamic_bitset<> field(targets[i].space);
+    // initialize all bits to ON
+    field.set();
     get_primes(&field);
 
     // Next, extract those ON bits into another array of prime numbers

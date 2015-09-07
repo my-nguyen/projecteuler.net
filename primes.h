@@ -1,5 +1,5 @@
-#ifndef PRIMES_T_H
-#define PRIMES_T_H
+#ifndef PRIMES_C_H
+#define PRIMES_C_H
 
 // This type represents a set of primes up to a given number (space)
 // bools is an array of true/false elements where true elements represent prime
