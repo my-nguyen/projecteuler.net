@@ -12,18 +12,18 @@ class bitfield_t
 public:
   bitfield_t(int space);
 
-  ~bitfield_t() { delete [] _field; }
+  ~bitfield_t() { delete [] _data; }
 
   void print(unsigned long field);
 
   void clear(int long_index)
-  { _field[byte_index(long_index)] &= ~(1l << bit_index(long_index)); }
+  { _data[byte_index(long_index)] &= ~(1l << bit_index(long_index)); }
 
   void set(int long_index)
-  { _field[byte_index(long_index)] |= (1l << bit_index(long_index)); }
+  { _data[byte_index(long_index)] |= (1l << bit_index(long_index)); }
 
   unsigned long test(int long_index) const
-  { return _field[byte_index(long_index)] & (1l << bit_index(long_index)); }
+  { return _data[byte_index(long_index)] & (1l << bit_index(long_index)); }
 
   friend ostream& operator<<(ostream& output, const bitfield_t& field);
 
@@ -32,8 +32,8 @@ private:
   int byte_index(int long_index) const { return long_index / BITS_PER_LONG; }
   int bit_index(int long_index) const { return long_index % BITS_PER_LONG; }
 
-  unsigned long* _field;
-  int _space;
+  unsigned long* _data;
+  int _size;
 };
 
 #endif
