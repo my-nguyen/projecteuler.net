@@ -1,7 +1,7 @@
 // Euler 7, in C++, version A: ported from the C implementation
 #include <iostream>
 #include <cstring> // memset(), memcpy()
-#include "primes.hpp"
+#include "primesa.hpp"
 using namespace std;
 
 int main()

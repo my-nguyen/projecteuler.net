@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h> // malloc(), free()
 #include <string.h> // memcpy()
-#include "primes.hpp"
+#include "primesa.hpp"
 
 // This method finds all prime numbers from 2 up to size and stores them in an
 // array, with prime numbers represented as ON bit and non-prime as OFF
