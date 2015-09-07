@@ -33,22 +33,27 @@ def get_primes()
   primes
 end
 
-# this method converts an array of booleans, where ON elements represent prime
-# numbers and OFF otherwise, into an array of prime numbers
-def pack_primes(primes)
-  result = []
-  primes.each_index do |i|
-    result << i if primes[i]
+# there's no need to create another array that contains only prime numbers
+# extracted from the array of bools (as in the previous version): Just look in
+# the array of bools for the target prime number.
+def get_prime(primes, target)
+  # index to the entire bool array
+  i = 1
+  # index only up to target
+  j = 0
+  while (j < target)
+    i += 1
+    j += 1 if primes[i]
   end
-  result
+  i
 end
 
 # reverse engineer: since I already solved this problem using a not-so-efficient
 # algorithm to find primes (which took 13 seconds), I know the answer to be
 # 104743, so I just have to declare array size as 105000
 SIZE = 105000
-primes = pack_primes(get_primes)
+primes = get_primes
 targets = [6, 11, 101, 1001, 2001, 3001, 4001, 5001, 6001, 7001, 8001, 9001, 10001]
 targets.each do |target|
-  puts("prime(#{target}): #{primes[target-1]}")
+  puts("prime(#{target}): #{get_prime(primes, target)}")
 end
