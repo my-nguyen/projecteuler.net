@@ -24,6 +24,8 @@ void set(bitfield_t* field, int long_index);
 
 unsigned long test(bitfield_t* field, int long_index);
 
+int long_count(bitfield_t* field);
+
 void print(bitfield_t* field);
 
 void destruct(bitfield_t* field);

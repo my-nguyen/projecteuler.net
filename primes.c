@@ -4,6 +4,7 @@
 // algorithm: while the older version took 13 seconds, this new version took
 // less than 1 second.
 #include <stdio.h>
+#include <string.h> // memcpy(), memset()
 #include "primes.h"
 #include "bitfield.h"
 
@@ -12,6 +13,9 @@
 void initialize(primes_t* primes, int size)
 {
   init(&primes->_field, size);
+
+  // initialize all bits to ON
+  memset(primes->_field._data, 0xFF, long_count(&primes->_field)*sizeof(long));
 
   // numbers 0 and 1 are not primes
   clear(&primes->_field, 0);

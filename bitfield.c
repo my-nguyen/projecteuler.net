@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h> // malloc(), free()
-#include <string.h> // memcpy(), memset()
 #include "bitfield.h"
 
 // all the bit operations below were lifted from
@@ -50,12 +49,16 @@ char* decimal2binary(unsigned long decimal, char binary[])
   return binary;
 }
 
+int long_count(bitfield_t* field)
+{
+  return (field->_size/BITS_PER_LONG) + ((field->_size%BITS_PER_LONG) ? 1 : 0);
+}
+
 // this method prints out all 64 bits in an unsigned long bitfield
 void print(bitfield_t* field)
 {
-  int long_count = (field->_size/BITS_PER_LONG) + ((field->_size%BITS_PER_LONG) ? 1 : 0);
   int i;
-  for (i = 0; i < long_count; i++)
+  for (i = 0; i < long_count(field); i++)
   {
     char binary[BITS_PER_LONG+1];
     binary[BITS_PER_LONG] = '\0';
@@ -65,16 +68,12 @@ void print(bitfield_t* field)
 
 void init(bitfield_t* field, int size)
 {
+  field->_size = size;
+
   // use an array of unsigned long to represent the array of booleans (bits).
   // each long contains 64 bits.
-  int long_count = (size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0);
-  int byte_count = long_count * sizeof(long);
-  field->_data = malloc(byte_count);
-  field->_size = size;
-  // printf("space required: %d, which fits in %d long's, or %ld bits\n", space, long_count, (long_count*BITS_PER_LONG));
-
-  // initialize all bits to ON
-  memset(field->_data, 0xFF, byte_count);
+  field->_data = malloc(long_count(field) * sizeof(long));
+  // printf("space required: %d, which fits in %d long's, or %ld bits\n", size, long_count(field), (long_count(field)*BITS_PER_LONG));
 }
 
 void destruct(bitfield_t* field)
