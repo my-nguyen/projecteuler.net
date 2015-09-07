@@ -7,12 +7,25 @@
 // This type represents the bitfield (an array of unsigned long) that contains
 // ON and OFF bits. the type includes all the operations needed on a bit such as
 // clear(), set(), and test()
-void bitfield_clear(unsigned long field[], int long_index);
+struct bitfield_t
+{
+  unsigned long* _data;
+  int _size;
+};
+typedef struct bitfield_t bitfield_t;
 
-void bitfield_set(unsigned long field[], int long_index);
+// C doesn't allow function overloading, hence must avoid the name initialize()
+// to be used by primes_t
+void init(bitfield_t* field, int size);
 
-unsigned long bitfield_test(unsigned long field[], int long_index);
+void clear(bitfield_t* field, int long_index);
 
-void bitfield_print(unsigned long field[], int size);
+void set(bitfield_t* field, int long_index);
+
+unsigned long test(bitfield_t* field, int long_index);
+
+void print(bitfield_t* field);
+
+void destruct(bitfield_t* field);
 
 #endif

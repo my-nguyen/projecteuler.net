@@ -25,8 +25,6 @@ public:
   unsigned long test(int long_index) const
   { return _field[byte_index(long_index)] & (1l << bit_index(long_index)); }
 
-  // int space() const { return _space; }
-
   friend ostream& operator<<(ostream& output, const bitfield_t& field);
 
 private:

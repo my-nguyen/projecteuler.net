@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h> // malloc(), free()
+#include <string.h> // memcpy(), memset()
 #include "bitfield.h"
 
 // all the bit operations below were lifted from
@@ -14,26 +16,26 @@ int bit_index(int long_index)
 }
 
 // this method clears a bit at a given index
-void bitfield_clear(unsigned long field[], int long_index)
+void clear(bitfield_t* field, int long_index)
 {
   // literal 1 is an int which is 32 bits. the shift (<<) and complement (~)
   // will yield inaccurate results for a 32-bit integer. Thus a long literal 1l
   // is used instead because it's 64 bits.
-  field[byte_index(long_index)] &= ~(1l << bit_index(long_index));
+  field->_data[byte_index(long_index)] &= ~(1l << bit_index(long_index));
 }
 
 // this method sets a bit at a given index
-void bitfield_set(unsigned long field[], int long_index)
+void set(bitfield_t* field, int long_index)
 {
-  field[byte_index(long_index)] |= (1l << bit_index(long_index));
+  field->_data[byte_index(long_index)] |= (1l << bit_index(long_index));
 }
 
 // this method tests whether a bit is on at a given index
 // return type needs to be unsigned long instead of int, for reason similar
 // to that in bitfield_clear()
-unsigned long bitfield_test(unsigned long field[], int long_index)
+unsigned long test(bitfield_t* field, int long_index)
 {
-  return field[byte_index(long_index)] & (1l << bit_index(long_index));
+  return field->_data[byte_index(long_index)] & (1l << bit_index(long_index));
 }
 
 // This method converts a long integer in decimal base to a binary string.
@@ -49,14 +51,33 @@ char* decimal2binary(unsigned long decimal, char binary[])
 }
 
 // this method prints out all 64 bits in an unsigned long bitfield
-void bitfield_print(unsigned long field[], int size)
+void print(bitfield_t* field)
 {
-  int long_count = (size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0);
+  int long_count = (field->_size/BITS_PER_LONG) + ((field->_size%BITS_PER_LONG) ? 1 : 0);
   int i;
   for (i = 0; i < long_count; i++)
   {
     char binary[BITS_PER_LONG+1];
     binary[BITS_PER_LONG] = '\0';
-    printf("%s\n", decimal2binary(field[i], binary));
+    printf("%s\n", decimal2binary(field->_data[i], binary));
   }
+}
+
+void init(bitfield_t* field, int size)
+{
+  // use an array of unsigned long to represent the array of booleans (bits).
+  // each long contains 64 bits.
+  int long_count = (size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0);
+  int byte_count = long_count * sizeof(long);
+  field->_data = malloc(byte_count);
+  field->_size = size;
+  // printf("space required: %d, which fits in %d long's, or %ld bits\n", space, long_count, (long_count*BITS_PER_LONG));
+
+  // initialize all bits to ON
+  memset(field->_data, 0xFF, byte_count);
+}
+
+void destruct(bitfield_t* field)
+{
+  free(field->_data);
 }
