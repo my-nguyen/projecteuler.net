@@ -37,7 +37,7 @@ unsigned long bitfield_test(unsigned long field[], int long_index)
 }
 
 // This method converts a long integer in decimal base to a binary string.
-char* decimal2binary(long decimal, char binary[])
+char* decimal2binary(unsigned long decimal, char binary[])
 {
   int i = 0;
   for (i = 0; i < BITS_PER_LONG; i++)
@@ -49,9 +49,14 @@ char* decimal2binary(long decimal, char binary[])
 }
 
 // this method prints out all 64 bits in an unsigned long bitfield
-void bitfield_print(unsigned long field)
+void bitfield_print(unsigned long field[], int size)
 {
-  char binary[BITS_PER_LONG+1];
-  binary[BITS_PER_LONG] = '\0';
-  printf("%s\n", decimal2binary(field, binary));
+  int long_count = (size/BITS_PER_LONG) + ((size%BITS_PER_LONG) ? 1 : 0);
+  int i;
+  for (i = 0; i < long_count; i++)
+  {
+    char binary[BITS_PER_LONG+1];
+    binary[BITS_PER_LONG] = '\0';
+    printf("%s\n", decimal2binary(field[i], binary));
+  }
 }

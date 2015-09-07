@@ -36,10 +36,7 @@ void main()
     primes_t primes;
     initialize(&primes, targets[i].space);
 
-    // Next, extract those ON bits into another array of prime numbers
-    array_t numbers = pack(&primes);
-
-    printf("prime(%d): %d\n", targets[i].prime, ((int*)numbers.data)[targets[i].prime-1]);
+    printf("prime(%d): %lu\n", targets[i].prime, idx(&primes, targets[i].prime));
 
     // Lastly, don't forget to free memory.
     destroy(&primes);

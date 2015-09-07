@@ -13,6 +13,6 @@ void bitfield_set(unsigned long field[], int long_index);
 
 unsigned long bitfield_test(unsigned long field[], int long_index);
 
-void bitfield_print(unsigned long field);
+void bitfield_print(unsigned long field[], int size);
 
 #endif
