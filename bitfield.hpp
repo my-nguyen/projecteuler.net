@@ -27,6 +27,10 @@ public:
 
   friend ostream& operator<<(ostream& output, const bitfield_t& field);
 
+  unsigned long* data() { return _data; }
+
+  int long_count() const { return (_size/BITS_PER_LONG) + ((_size%BITS_PER_LONG) ? 1 : 0); }
+
 private:
   char* decimal2binary(long decimal, char binary[]) const;
   int byte_index(int long_index) const { return long_index / BITS_PER_LONG; }

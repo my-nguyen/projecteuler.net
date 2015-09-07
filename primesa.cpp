@@ -12,6 +12,9 @@
 // array, with prime numbers represented as ON bit and non-prime as OFF
 primes_t::primes_t(int space) : _field(space)
 {
+  // initialize all bits to ON
+  memset(_field.data(), 0xFF, _field.long_count()*sizeof(long));
+
   // numbers 0 and 1 are not primes
   _field.clear(0);
   _field.clear(1);
