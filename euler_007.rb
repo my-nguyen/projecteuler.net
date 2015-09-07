@@ -48,7 +48,7 @@ end
 # 104743, so I just have to declare array size as 105000
 SIZE = 105000
 primes = pack_primes(get_primes)
-targets = [6, 11, 101, 1001, 10001]
+targets = [6, 11, 101, 1001, 2001, 3001, 4001, 5001, 6001, 7001, 8001, 9001, 10001]
 targets.each do |target|
-  puts("prime(#{target}): #{primes[target+1]}")
+  puts("prime(#{target}): #{primes[target-1]}")
 end
