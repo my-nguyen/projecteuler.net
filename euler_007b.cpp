@@ -37,12 +37,6 @@ int main()
     // while the non-prime numbers are OFF bits.
     primes_t primes(targets[i].space);
 
-/*
-    cout << "found " << primes.size() << " prime numbers below " << targets[i].space << endl;
-    // array_print(primes, prime_count);
-    cout << "the " << targets[i].prime << "th prime number is " << primes[targets[i].prime-1] << endl;
-    cout << "**********************************************" << endl;
-*/
     cout << "prime(" << targets[i].prime << "): " << primes.index(targets[i].prime) << endl;
   }
 }
