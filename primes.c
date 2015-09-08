@@ -29,7 +29,9 @@ void initialize(primes_t* primes, int size)
     if (test(&primes->_field, i))
     {
       int multiple = 2;
-      while (i*multiple <= size)
+      // this test for < space is important. the previous test of <= space
+      // caused a seg fault upon calling free() when the test case was 1000000!!
+      while (i*multiple < size)
       {
         // all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes.
         // So turn off bit at (i*multiple)th position.

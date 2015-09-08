@@ -10,9 +10,9 @@
 
 void main()
 {
-  // int targets[] = {10, 100000, 500000, 1000000, 1500000, 2000000};
+  int targets[] = {10, 100000, 500000, 1000000, 1500000, 2000000};
   // for some reason the program bombs when freeing memory when target is 1000000
-  int targets[] = {10, 100000, 500000, 1500000, 2000000};
+  // int targets[] = {10, 100000, 500000, 1500000, 2000000};
   int i;
   for (i = 0; i < sizeof(targets)/sizeof(int); i++)
   {
