@@ -3,9 +3,7 @@
 // This algorithm proves to be a vast improvement on my older prime-finding
 // algorithm: while the older version took 13 seconds, this new version took
 // less than 1 second.
-#include <stdio.h>
-#include <stdlib.h> // malloc(), free()
-#include <string.h> // memcpy()
+#include <cstring> // memset()
 #include "primesa.hpp"
 
 // This method finds all prime numbers from 2 up to size and stores them in an
@@ -26,7 +24,9 @@ primes_t::primes_t(int space) : _field(space)
     if (_field.test(i))
     {
       int multiple = 2;
-      while (i*multiple <= space)
+      // this test for < space is important. the previous test of <= space
+      // caused a seg fault upon operator delete when the test case was 1000000!!
+      while (i*multiple < space)
       {
         // all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes.
         // So turn off bit at (i*multiple)th position.
@@ -55,4 +55,15 @@ unsigned long primes_t::index(int position)
       j += 1;
   }
   return i;
+}
+
+// this method returns the sum of all the prime numbers within the bools array
+unsigned long primes_t::sum()
+{
+  unsigned long sum = 0;
+  // iterate the entire bitfield
+  for (int i = 0; i < _field.size(); i++)
+    if (_field.test(i))
+      sum += i;
+  return sum;
 }

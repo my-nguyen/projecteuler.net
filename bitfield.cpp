@@ -6,10 +6,6 @@ bitfield_t::bitfield_t(int size) : _size(size)
   // use an array of unsigned long to represent the array of booleans (bits).
   // each long contains 64 bits.
   _data = new unsigned long[long_count()];
-  /*
-  cout << "space required: " << space << ", which fits in " << long_count
-      << " long's, or " << (long_count*BITS_PER_LONG) << " bits" << endl;
-      */
 }
 
 // This method converts a long integer in decimal base to a binary string.

@@ -29,6 +29,8 @@ public:
 
   unsigned long* data() { return _data; }
 
+  int size() { return _size; }
+
   int long_count() const { return (_size/BITS_PER_LONG) + ((_size%BITS_PER_LONG) ? 1 : 0); }
 
 private:

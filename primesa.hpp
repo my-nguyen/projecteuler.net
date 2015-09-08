@@ -4,9 +4,9 @@
 #include "bitfield.hpp"
 
 // This type represents a set of primes up to a given number (space)
-// bools is an array of true/false elements where true elements represent prime
-// numbers and false elements represent non-prime numbers. this array is created
-// via initialize()
+// While bitfield_t which is dedicated to bit manipulation (set(), clear(), test(),
+// etc) only, primes_t is used to operate on a whole bitfield, such as index(),
+// sum()
 class primes_t
 {
 public:
@@ -14,11 +14,12 @@ public:
 
   unsigned long index(int position);
 
+  unsigned long sum();
+
   ~primes_t() {}
 
 private:
   bitfield_t _field;
 };
-
 
 #endif
