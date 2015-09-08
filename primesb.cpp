@@ -49,6 +49,18 @@ unsigned long primes_t::index(int position)
   return i;
 }
 
+// this method returns the sum of all the prime numbers within the bools array
+unsigned long primes_t::sum()
+{
+  unsigned long sum = 0;
+  // iterate the entire bitfield
+  int i;
+  for (i = 0; i < _field.size(); i++)
+    if (_field.test(i))
+      sum += i;
+  return sum;
+}
+
 /*
 void bitset_print(const boost::dynamic_bitset<>& field)
 {

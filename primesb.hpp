@@ -14,6 +14,8 @@ public:
 
   unsigned long index(int position);
 
+  unsigned long sum();
+
   ~primes_t() {}
 
 private:
