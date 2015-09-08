@@ -12,40 +12,10 @@
 # 1500000     82074443256     2201          .72
 # 2000000     142913828922    3850          .97
 #
-def get_primes(target)
-  primes = Array.new(target+1, true)
-
-  # numbers 0 and 1 are not primes
-  primes[0] = false
-  primes[1] = false
-
-  # start with 2, the very first prime number
-  2.upto(target) do |index|
-    # only consider prime numbers
-    if primes[index]
-      multiple = 2
-      while (index*multiple <= target)
-        # all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes
-        primes[index*multiple] = false
-        multiple += 1
-      end
-    end
-  end
-  primes
-end
-
-# this method converts an array of booleans, where ON elements represent prime
-# numbers and OFF otherwise, into an array of prime numbers
-def pack_primes(primes)
-  result = []
-  primes.each_index do |i|
-    result << i if primes[i]
-  end
-  result
-end
+require_relative 'primes'
 
 targets = [10, 100000, 500000, 1000000, 1500000, 2000000]
 targets.each do |target|
-  primes = pack_primes(get_primes(target))
-  puts("Sum primes(#{target}): #{primes.reduce(:+)}")
+  primes = Primes.new(target)
+  puts("Sum primes(#{target}): #{primes.sum}")
 end

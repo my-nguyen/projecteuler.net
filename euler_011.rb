@@ -27,6 +27,7 @@
 #
 class MaxProduct
   # practice using Ruby Struct
+  # Slice is a new type, of type Struct, with 2 member variables: slice (array) and product
   Slice = Struct.new(:slice, :product)
 
   def initialize

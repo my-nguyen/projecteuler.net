@@ -44,4 +44,15 @@ class Primes
     end
     i
   end
+
+  # this method returns the sum of all the prime numbers within the bools array
+  def sum()
+    sum = 0
+    # iterate the entire bools array
+    @bools.each_index do |i|
+      # only add to sum if bools at i is ON
+      sum += i if @bools[i]
+    end
+    sum
+  end
 end

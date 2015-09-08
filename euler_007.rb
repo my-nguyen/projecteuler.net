@@ -3,7 +3,8 @@
 # that the 6th prime is 13.
 # What is the 10001st prime number?
 #
-require './primes.rb'
+require_relative 'primes'
+
 # reverse engineer: since I already solved this problem using a not-so-efficient
 # algorithm to find primes (which took 13 seconds), I know the answer to be
 # 104743, so I just have to declare array size as 105000
