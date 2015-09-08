@@ -61,6 +61,18 @@ unsigned long idx(primes_t* primes, int position)
   return i;
 }
 
+// this method returns the sum of all the prime numbers within the bools array
+unsigned long sum(primes_t* primes)
+{
+  unsigned long sum = 0;
+  // iterate the entire bitfield
+  int i;
+  for (i = 0; i < primes->_field._size; i++)
+    if (test(&primes->_field, i))
+      sum += i;
+  return sum;
+}
+
 void destroy(primes_t* primes)
 {
   destruct(&primes->_field);

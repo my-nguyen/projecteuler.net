@@ -18,6 +18,8 @@ void initialize(primes_t* primes, int size);
 // extract the prime number at position
 unsigned long idx(primes_t* primes, int position);
 
+unsigned long sum(primes_t* primes);
+
 void destroy(primes_t* primes);
 
 #endif
