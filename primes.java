@@ -53,5 +53,15 @@ class primes
     return i;
   }
 
+  public long sum()
+  {
+    long sum = 0;
+    // iterate the entire bitfield
+    for (int i = 0; i < _field.size(); i++)
+      if (_field.get(i))
+        sum += i;
+    return sum;
+  }
+
   private BitSet _field;
 }
