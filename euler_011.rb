@@ -40,8 +40,9 @@ class MaxProduct
 
   # this method takes a row/column/diagonal, finds the max product of such,
   # and store the result in @max
-  def find_max(label, row)
-    print_array(label, row)
+  def find_max(row)
+    print("data:")
+    print_array(row)
     # take the max of the current row/column/diagonal
     current = max_of(row, @max.product)
     # compare that with the max and reset max if necessary
@@ -117,7 +118,8 @@ class MaxProduct
   end
 
   def report
-    print_array("MAX PRODUCT: #{@max.product}, slice:", @max.slice)
+    print("MAX PRODUCT: #{@max.product}, slice:")
+    print_array(@max.slice)
   end
 
   private
@@ -155,8 +157,7 @@ class MaxProduct
   end
 
   # helper method to print out all numbers in an array
-  def print_array label, numbers
-    print label
+  def print_array numbers
     numbers.each do |number|
       print " #{number}"
     end
@@ -180,7 +181,8 @@ class MaxProduct
         product = slice.reduce(1, :*)
         # update max if necessary
         if product > result.product
-          print_array("current: #{result.product}, new: #{product}, slice:", slice)
+          print("current: #{result.product}, new: #{product}, slice:")
+          print_array(slice)
           result.product = product
           result.slice = slice.dup
         end
@@ -199,41 +201,41 @@ product = MaxProduct.new
 # take the max of all rows
 MAX_GRID.times do |i|
   row = product.row(i)
-  product.find_max("row:", row)
+  product.find_max(row)
 end
 product.report
 
 # take the max of all columns
 MAX_GRID.times do |j|
   column = product.column(j)
-  product.find_max("column:", column)
+  product.find_max(column)
 end
 product.report
 
 # take the max of the first half diagonals sweeping down
 (MAX_GRID-MAX_SLICE).downto(0) do |i|
   diagonal = product.diagonal_down_first(i, 0)
-  product.find_max("diagonal:", diagonal)
+  product.find_max(diagonal)
 end
 product.report
 
 # take the max of the last half diagonals sweeping down
 1.upto(MAX_GRID-MAX_SLICE) do |j|
   diagonal = product.diagonal_down_last(0, j)
-  product.find_max("diagonal:", diagonal)
+  product.find_max(diagonal)
 end
 product.report
 
 # take the max of the first half diagonals sweeping up
 (MAX_SLICE-1).upto(MAX_GRID-1) do |i|
   diagonal = product.diagonal_up_first(i, 0)
-  product.find_max("diagonal:", diagonal)
+  product.find_max(diagonal)
 end
 product.report
 
 # take the max of the first half diagonals sweeping down
 1.upto(MAX_GRID-MAX_SLICE) do |j|
   diagonal = product.diagonal_up_last(MAX_GRID-1, j)
-  product.find_max("diagonal:", diagonal)
+  product.find_max(diagonal)
 end
 product.report
