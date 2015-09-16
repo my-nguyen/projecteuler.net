@@ -1,5 +1,3 @@
-//
-
 public class euler_017
 {
   static String word(int number)
