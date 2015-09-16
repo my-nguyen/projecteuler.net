@@ -1,6 +1,6 @@
+// Compile with javac (download jdk before this!)
 import java.util.*;
 
-// Compile with javac (download jdk before this!)
 class euler_002
 {
   public static void main(String[] args)
