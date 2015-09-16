@@ -14,6 +14,7 @@ public class euler_019
       if (year % 4 != 0)
         return 28;
       else
+      {
         // if year is evenly divisible by 4 but not by 100, it's a leap year
         if (year % 100 != 0)
           return 29;
@@ -21,6 +22,7 @@ public class euler_019
           // if year is evenly divisible by 4, by 100 and by 400, it's a leap year
           // otherwise it's not a leap year
           return (year % 400 == 0 ? 29 : 28);
+      }
     }
   }
 
