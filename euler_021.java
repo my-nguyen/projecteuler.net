@@ -2,6 +2,8 @@ import java.util.*;
 
 public class euler_021
 {
+  // this method returns a list of all proper divisors of n (numbers less than n
+  // which divide evenly into n)
   static List<Integer> divisors(int number)
   {
     List<Integer> divisors = new ArrayList<>();
@@ -29,6 +31,7 @@ public class euler_021
     return divisors;
   }
 
+  // this method returns the sum of all numbers in a list
   static int sum(List<Integer> list)
   {
     int sum = 0;
@@ -40,25 +43,21 @@ public class euler_021
   final static int MAX_AMICABLE = 10000;
   public static void main(String[] args)
   {
-    // int[] pairs = new int[10];
     List<Integer> pairs = new ArrayList<>();
     for (int i = 1; i <= MAX_AMICABLE; i++)
     {
-      if (pairs.contains(i) == false)
+      // take the sum of all divisors of the current number (i)
+      int sum = sum(divisors(i));
+      // only need to check for a possible pair if sum is greater than i
+      if (sum > i)
       {
-        int sumi = sum(divisors(i));
-        for (int j = 1; j <= MAX_AMICABLE; j++)
+        // take the sum of all divisors of the sum, and see if that equals the
+        // current number (i)
+        if (sum(divisors(sum)) == i)
         {
-          if (i != j)
-          {
-            int sumj = sum(divisors(j));
-            if (sumi == j && sumj == i)
-            {
-              System.out.println(i + " and " + j);
-              pairs.add(i);
-              pairs.add(j);
-            }
-          }
+          System.out.println(i + " and " + sum);
+          pairs.add(i);
+          pairs.add(sum);
         }
       }
     }
