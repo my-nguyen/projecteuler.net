@@ -8,19 +8,20 @@ public class euler_018
 {
   static List<List<Integer>> input()
   {
-    Scanner in = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
     // 2-dimensional array of integers
     List<List<Integer>> triangle = new ArrayList<>();
     int i = 1;
-    while (in.hasNextInt())
+    while (scanner.hasNextInt())
     {
       List<Integer> row = new ArrayList<>();
       // read 1 int at row 1, 2 int's at row 2, etc
       for (int j = 0; j < i; j++)
-        row.add(in.nextInt());
+        row.add(scanner.nextInt());
       triangle.add(row);
       i++;
     }
+    scanner.close();
 
     return triangle;
   }
