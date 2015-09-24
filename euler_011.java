@@ -197,13 +197,11 @@ class euler_011
   // an array of 20 integers
   private static void st_toarray(String string, int[] array)
   {
-    int j = 0;
-    StringTokenizer token = new StringTokenizer(string, " ");
-    while (token.hasMoreTokens())
-    {
-      array[j] = Integer.parseInt(token.nextToken());
-      j++;
-    }
+    // replaced StringTokenizer with String::split() because according to the
+    // web, StringTokenizer is legacy code
+    String[] tokens = string.split(" ");
+    for (int i = 0; i < tokens.length; i++)
+      array[i] = Integer.parseInt(tokens[i]);
   }
 
   private static void initialize(int[][] grid)
