@@ -1,3 +1,11 @@
+// For explanations of the solution to this problem, refer to
+// http://www.davidespataro.it/project-euler-problem-24/
+// http://mahendrakariya.blogspot.com/2009/08/project-euler-problem-24-different.html
+// http://www.mathblog.dk/project-euler-24-millionth-lexicographic-permutation/
+// http://blog.singhanuvrat.com/problems/project-euler-the-millionth-lexicographic-permutation-of-the-digits
+// http://math.stackexchange.com/questions/60742/finding-the-n-th-lexicographic-permutation-of-a-string
+// http://www.eggwall.com/2012/01/project-euler-in-r-problem-24.html
+// https://www.quora.com/What-is-the-most-efficient-solution-for-Project-Euler-problem-24-in-C-or-C++
 import java.util.*;
 
 public class euler_024
@@ -31,7 +39,6 @@ public class euler_024
         count += 1;
       i += 1;
     }
-    // System.out.println("target: " + target + ", used: " + toString(used) + ", result: " + (i-1));
     return i-1;
   }
 
@@ -46,34 +53,6 @@ public class euler_024
     return result.toString();
   }
 
-  // this method returns all permutations of a string
-  // turn this from recursion into iteration?
-  static List<String> permutations(String source)
-  {
-    List<String> result = new ArrayList<>();
-    // special case when there's only one character in source
-    if (source.length() == 1)
-      result.add(source);
-    else
-    {
-      for (int i = 0; i < source.length(); i++)
-      {
-        // take a substring of source, with letter at position i removed
-        char letter = source.charAt(i);
-        String copy = source.substring(0, i) + source.substring(i + 1);
-        // compute all permutations of the substring
-        for (String permute : permutations(copy.toString()))
-        {
-          // for each permutation found in the substring, form a new permutation
-          // by combining the letter and the substring permutation.
-          // System.out.println("i: " + i + ", letter: " + letter + ", copy: " + copy + ", permute: " + permute);
-          result.add(letter + permute);
-        }
-      }
-    }
-    return result;
-  }
-
   public static void main(String[] args)
   {
     int[] limits = { 100, 1000, 10000, 100000, 1000000, 119, 120, 121 };
@@ -85,10 +64,13 @@ public class euler_024
       // array of booleans all initialized to false
       boolean[] used = new boolean[index+1];
 
-      while (limit % factorial(index) != 0)
+      while (index >= 1)
       {
-        // how many factorials(index) does it take to reach just below limit?
+        // how many factorial(index) does it take to reach just below limit?
         int divisor = limit / factorial(index);
+        // adjust divisor when limit evenly divides factorial(index)
+        if (limit % factorial(index) == 0)
+          divisor -= 1;
         // calculate the proper placement/index of this divisor within the bool array
         int digit = index(used, divisor);
         // mark the bool array accordingly
@@ -97,24 +79,13 @@ public class euler_024
         permutation.append((char)(digit + '0'));
         System.out.println("limit: " + limit + ", index: " + index + ", factorial: " + factorial(index) + ", divisor: " + divisor + ", digit: " + digit + ", permutation: " + permutation);
         // calculations for the next iteration
-        limit %= factorial(index);
+        if (limit % factorial(index) == 0)
+          limit = factorial(index);
+        else
+          limit %= factorial(index);
         index -= 1;
       }
-
-      // limit evenly divides a factorial: we're very close to the finish line.
-      // calculate the remaining permutations
-      // diff happens to be the index to the next set of permutations
-      int diff = limit - factorial(index);
-      if (diff != 0)
-      {
-        // collect all unused digits
-        String unused = unused(used);
-        // calculate all permutations of those unused digits
-        List<String> perms = permutations(unused);
-        System.out.println("diff: " + diff + ", unused: " + unused + ", perms: " + perms);
-        // take the right permutation based on the difference calculated above
-        permutation.append(perms.get(diff-1));
-      }
+      permutation.append(unused(used));
 
       System.out.println("permutation: " + permutation);
     }
