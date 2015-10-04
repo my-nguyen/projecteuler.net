@@ -29,7 +29,7 @@ public class euler_024
 
   // this method returns the proper index to an array of boolean's based on a
   // target and the ON and OFF elements in the array
-  static int index(boolean[] used, int target)
+  static int rank(boolean[] used, int target)
   {
     int count = 0;
     int i = 0;
@@ -72,7 +72,7 @@ public class euler_024
         if (limit % factorial(index) == 0)
           divisor -= 1;
         // calculate the proper placement/index of this divisor within the bool array
-        int digit = index(used, divisor);
+        int digit = rank(used, divisor);
         // mark the bool array accordingly
         used[digit] = true;
         // collect this index in the permutation
