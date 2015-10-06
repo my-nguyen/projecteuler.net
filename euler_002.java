@@ -1,30 +1,53 @@
-// Compile with javac (download jdk before this!)
+// for an explanation to the "Even Only" solution, refer to:
+// http://www.mathblog.dk/project-euler-problem-2/
 import java.util.*;
 
 class euler_002
 {
+  static int brute_force(int limit)
+  {
+    int fib1 = 1;
+    int fib2 = 1;
+    int fib3;
+    int sum = 0;
+    while ((fib3 = fib1 + fib2) < limit)
+    {
+      // take the sum of only even fibonacci numbers
+      if (fib3 % 2 == 0)
+        sum += fib3;
+      fib1 = fib2;
+      fib2 = fib3;
+    }
+
+    return sum;
+  }
+
+  // Fn = Fn-1 + Fn-2 =
+  // Fn-2 + Fn-3 + Fn-3 +Fn-4 = (since Fn-1 = Fn-2 + Fn-3 and so on)
+  // Fn-3 + Fn-4 + Fn-3 +Fn-3 +Fn-4 = 3Fn-3 + 2Fn-4 =
+  // 3Fn-3 + Fn-4 + Fn-5 + Fn-6) =
+  // 4Fn-3 + Fn-6 (since Fn-4 + Fn-5 = Fn-3)
+  static int even_only(int limit)
+  {
+    int fib3 = 2;
+    int fib6 = 0;
+    int result = 2;
+    int sum = 0;
+    while (result < limit)
+    {
+      sum += result;
+      result = 4*fib3 + fib6;
+      fib6 = fib3;
+      fib3 = result;
+    }
+
+    return sum;
+  }
+
   public static void main(String[] args)
   {
-    int[] limits = {10, 100, 1000, 10000, 100000, 1000000, 2000000, 4000000};
-    // for (int i = 0; i < limits.length; i++)
-    for (int limit : limits)
-    {
-      List<Integer> fibs = new ArrayList<Integer>();
-      fibs.add(1);
-      fibs.add(2);
-
-      int fib;
-      while ((fib = fibs.get(fibs.size()-2) + fibs.get(fibs.size()-1)) < limit)
-        fibs.add(fib);
-
-      int sum = 0;
-      // for (int j = 0; j < fibs.size(); j++)
-      for (int fibo : fibs)
-        if (fibo % 2 == 0)
-          sum += fibo;
-
-      System.out.println("limit: " + limit + ", sum: " + sum);
-      // fibs.print();
-    }
+    int limit = 4000000;
+    System.out.println("Brute force: " + brute_force(limit));
+    System.out.println("Only even numbers: " + even_only(limit));
   }
 }
