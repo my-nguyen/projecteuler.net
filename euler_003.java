@@ -4,21 +4,24 @@ class euler_003
   {
     long prime = 2;
     while (target > prime)
-      // if target is divisible by the current prime, then keep dividing
-      // target by the current prime
+      // if target is divisible by the current prime number, then keep dividing
+      // target by the current prime number. that way, if target is divisible by
+      // 4, 8, 16, 32, the repeated divisions by 2 will take care of those
+      // powers of 2. similarly, if target is divisible by 9, 27, 81, the
+      // repeated divisions by 3 will take care of those powers of 3. and so on.
       if (target % prime == 0)
         target /= prime;
-      // otherwise move on to the next number
+      // otherwise move on to the next prime number
       else
         prime += 1;
+    // the last standing prime is the result looked for.
     return prime;
   }
 
   public static void main(String[] args)
   {
     long targets[] = {13915, 475143, 1475143, 51475143, 1851475143, 10851475143L, 600851475143L};
-    int i;
-    for (i = 0; i < targets.length; i++)
-      System.out.println("target: " + targets[i] + ", largest prime: " + largest_prime(targets[i]));
+    for (long target : targets)
+      System.out.println("target: " + target + ", largest prime: " + largest_prime(target));
   }
 }
