@@ -1,11 +1,3 @@
-def print_array numbers
-  numbers.each_index do |i|
-    print " #{numbers[i]}"
-    puts if ((i+1) % 10 == 0 && i != (numbers.size-1))
-  end
-  puts
-end
-
 limits = [10, 20, 100, 500, 1000]
 limits.each do |limit|
   multiples = []
@@ -19,16 +11,13 @@ limits.each do |limit|
     multiples << number * 3
   end
 
-  # similarly with multiples of 5, except that we need to discount those that are
-  # multiples of both 5 and 3, because those are already accounted for in the
-  # other loop above
+  # similarly with multiples of 5, except that we need to discount those that
+  # are multiples of both 5 and 3, because those are already accounted for in
+  # the other loop above
   highest_5 = (limit-1) / 5
   1.upto(highest_5) do |number|
     multiples << (number * 5) if (number % 3 != 0)
   end
 
-  multiples.sort!
   puts("limit: #{limit}, sum: #{multiples.reduce(:+)}")
-  # print_array multiples
 end
-# ANSWER for limit 1000: sum is 233168

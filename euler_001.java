@@ -1,24 +1,37 @@
-// Compile with javac (download jdk before this!)
+// I choose the brute-force/straigthforward implementation because I don't quite
+// understand the geometric/arithmetic solution which can be found here:
+// http://www.mathblog.dk/project-euler-problem-1/
+import java.util.*;
+
 class euler_001
 {
+  static int sum(List<Integer> array)
+  {
+    int sum = 0;
+    for (int number : array)
+      sum += number;
+    return sum;
+  }
+
   public static void main(String[] args)
   {
     int[] limits = {10, 20, 100, 500, 1000};
-    for (int i = 0; i < limits.length; i++)
+    for (int limit : limits)
     {
-      int_array multiples = new int_array();
-      int highest_3 = (limits[i]-1) / 3;
-      for (int j = 1; j <= highest_3; j++)
-        multiples.push(j * 3);
+      List<Integer> multiples = new ArrayList<>();
 
-      int highest_5 = (limits[i]-1) / 5;
+      // collect all multiples of 3
+      int highest_3 = (limit-1) / 3;
+      for (int j = 1; j <= highest_3; j++)
+        multiples.add(j * 3);
+
+      // collect all multiples of 5
+      int highest_5 = (limit-1) / 5;
       for (int j = 1; j <= highest_5; j++)
         if (j % 3 != 0)
-          multiples.push(j * 5);
+          multiples.add(j * 5);
 
-      multiples.sort();
-      System.out.println("limit: " + limits[i] + ", sum: " + multiples.sum());
-      // multiples.print();
+      System.out.println("limit: " + limit + ", sum: " + sum(multiples));
     }
   }
 }
