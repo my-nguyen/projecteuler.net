@@ -1,9 +1,10 @@
-// Refer to euler_001.rb for clarifying comments.
+// for an explanation to the geometric/arithmetic solution, refer to:
+// http://www.mathblog.dk/project-euler-problem-1/
 #include <iostream>
 #include <vector>
 using namespace std;
 
-int sum(vector<int> array)
+int sum(vector<int>& array)
 {
   int sum = 0;
   for (int i = 0; i < array.size(); i++)
@@ -11,24 +12,40 @@ int sum(vector<int> array)
   return sum;
 }
 
+int brute_force(int limit)
+{
+  vector<int> multiples;
+
+  // collect all multiples of 3
+  for (int j = 1; j <= limit/3; j++)
+    multiples.push_back(j * 3);
+
+  // collect all multiples of 5
+  for (int j = 1; j <= limit/5; j++)
+    if (j % 3 != 0)
+      multiples.push_back(j * 5);
+
+  return sum(multiples);
+}
+
+// sum of multiples of 3: 3+6+9+12+…+999 = 3*(1+2+3+4+…+333)
+// whereas 1+2+3+4+…+N = N*(N+1)/2
+// so sum of multiples of 3 is 3*(N*(N+1)/2) where N=999/3=333
+// similarly, sum of multiples of 5 is 5*(N*(N+1)/2) where N=999/5=199
+int sum_of_multiples(int divisor, int limit)
+{
+  int N = limit/divisor;
+  return divisor * (N * (N+1) / 2);
+}
+
+int geometric(int limit)
+{
+  return sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit);
+}
+
 int main()
 {
-  int limits[] = {10, 20, 100, 500, 1000};
-  for (int i = 0; i < sizeof(limits)/sizeof(int); i++)
-  {
-    vector<int> multiples;
-
-    // collect all multiples of 3
-    int highest_3 = (limits[i]-1) / 3;
-    for (int j = 1; j <= highest_3; j++)
-      multiples.push_back(j * 3);
-
-    // collect all multiples of 5
-    int highest_5 = (limits[i]-1) / 5;
-    for (int j = 1; j <= highest_5; j++)
-      if (j % 3 != 0)
-        multiples.push_back(j * 5);
-
-    cout << "limit: " << limits[i] << ", sum: " << sum(multiples) << endl;
-  }
+  int limit = 999;
+  cout << "Brute force: " << brute_force(limit) << endl;
+  cout << "Geometric: " << geometric(limit) << endl;
 }

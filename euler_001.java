@@ -1,5 +1,4 @@
-// I choose the brute-force/straigthforward implementation because I don't quite
-// understand the geometric/arithmetic solution which can be found here:
+// for an explanation to the geometric/arithmetic solution, refer to:
 // http://www.mathblog.dk/project-euler-problem-1/
 import java.util.*;
 
@@ -13,25 +12,41 @@ class euler_001
     return sum;
   }
 
+  static int brute_force(int limit)
+  {
+    List<Integer> multiples = new ArrayList<>();
+
+    // collect all multiples of 3
+    for (int j = 1; j <= limit/3; j++)
+      multiples.add(j * 3);
+
+    // collect all multiples of 5
+    for (int j = 1; j <= limit/5; j++)
+      if (j % 3 != 0)
+        multiples.add(j * 5);
+
+    return sum(multiples);
+  }
+
+  // sum of multiples of 3: 3+6+9+12+…+999 = 3*(1+2+3+4+…+333)
+  // whereas 1+2+3+4+…+N = N*(N+1)/2
+  // so sum of multiples of 3 is 3*(N*(N+1)/2) where N=999/3=333
+  // similarly, sum of multiples of 5 is 5*(N*(N+1)/2) where N=999/5=199
+  static int sum_of_multiples(int divisor, int limit)
+  {
+    int N = limit/divisor;
+    return divisor * (N * (N+1) / 2);
+  }
+
+  static int geometric(int limit)
+  {
+    return sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit);
+  }
+
   public static void main(String[] args)
   {
-    int[] limits = {10, 20, 100, 500, 1000};
-    for (int limit : limits)
-    {
-      List<Integer> multiples = new ArrayList<>();
-
-      // collect all multiples of 3
-      int highest_3 = (limit-1) / 3;
-      for (int j = 1; j <= highest_3; j++)
-        multiples.add(j * 3);
-
-      // collect all multiples of 5
-      int highest_5 = (limit-1) / 5;
-      for (int j = 1; j <= highest_5; j++)
-        if (j % 3 != 0)
-          multiples.add(j * 5);
-
-      System.out.println("limit: " + limit + ", sum: " + sum(multiples));
-    }
+    int limit = 999;
+    System.out.println("Brute force: " + brute_force(limit));
+    System.out.println("Geometric: " + geometric(limit));
   }
 }

@@ -1,23 +1,38 @@
-limits = [10, 20, 100, 500, 1000]
-limits.each do |limit|
-  multiples = []
-  # If limit is 20, then the multiples of 3 that are below 20 are 1*3, 2*3, 3*3,
-  # 4*3, 5*3, 6*3, OR 3, 6, 9, 12, 15, and 18. 18 is the highest multiple of 3
-  # that is still less than the limit, and we can obtain the divisor of that
-  # highest multiple by dividing the limit by 3: 20/3 = 6. Then sum them all as
-  # per the problem's requirement
-  highest_3 = (limit-1) / 3
-  1.upto(highest_3) do |number|
-    multiples << number * 3
-  end
-
-  # similarly with multiples of 5, except that we need to discount those that
-  # are multiples of both 5 and 3, because those are already accounted for in
-  # the other loop above
-  highest_5 = (limit-1) / 5
-  1.upto(highest_5) do |number|
-    multiples << (number * 5) if (number % 3 != 0)
-  end
-
-  puts("limit: #{limit}, sum: #{multiples.reduce(:+)}")
+def sum(array)
+  array.reduce(:+)
 end
+
+def brute_force(limit)
+  multiples = []
+
+  # collect all multiples of 3
+  1.upto(limit/3) do |j|
+    multiples << j * 3
+  end
+
+  # collect all multiples of 5
+  1.upto(limit/5) do |j|
+    if (j % 3 != 0)
+      multiples << j * 5
+    end
+  end
+
+  sum(multiples)
+end
+
+# sum of multiples of 3: 3+6+9+12+…+999 = 3*(1+2+3+4+…+333)
+# whereas 1+2+3+4+…+N = N*(N+1)/2
+# so sum of multiples of 3 is 3*(N*(N+1)/2) where N=999/3=333
+# similarly, sum of multiples of 5 is 5*(N*(N+1)/2) where N=999/5=199
+def sum_of_multiples(divisor, limit)
+  n = limit/divisor
+  divisor * (n * (n+1) / 2)
+end
+
+def geometric(limit)
+  sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit)
+end
+
+limit = 999
+puts("Brute force: #{brute_force(limit)}")
+puts("Geometric: #{geometric(limit)}")
