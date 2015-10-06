@@ -1,55 +1,88 @@
-# original algorithm to check whether a number is a palindrome: first convert
-# the number to a string, then compare the digits from both ends.
-def palindrome?(number)
-  string = number.to_s
-  i = 0
-  # move index i forward while comparing the leftmost with the rightmost digit
-  while (i < string.length/2 && string[i] == string[-1-i])
-    i += 1
-  end
-
-  # if index goes beyond half the number without finding a mismatch, then
-  # a palindrome is found. Otherwise, no palindrome.
-  return i >= string.length/2
-end
-
-# find the reverse of a number. this method is flawed: if the original number
-# has trailing zeroes, then those zeroes won't appear in the reversed number.
+# this method returns the reverse of a number.
 def reverse(number)
-  other = 0
-  while number != 0
-    other = other*10 + number%10
-    number /= 10
-  end
-  other
+  number.to_s.reverse.to_i
 end
 
-# new and improved algorithm to find a palindrome: compare the number with its
-# own reverse
-def palindrome2?(number)
+# this method returns whether a number is a palindrome
+def is_palindrome(number)
   number == reverse(number)
 end
 
-# find the largest palindrome found in all products of 1-digit, 2-digit and
-# 3-digit numbers
-def largest_palindrome_product(target)
-  max = 1
+# this method counts the number of digits in a number
+def count_digits(number)
+  number.to_s.length
+end
+
+# this method returns number 1, repeated as many times as specified in param
+def repeat(times)
+  ("1" * times).to_i
+end
+
+# this method finds the largest palindrome found in all products of 1-digit,
+# 2-digit and 3-digit numbers
+def brute_force(target)
   result = []
-  # use 2 indices: upper starts from target down to 1, and lower starts from upper
-  # down to 1
-  target.downto(1) do |upper|
-    upper.downto(1) do |lower|
+  max = 1
+  # use 2 indices: upper starts from target down to 1, and lower starts from
+  # upper down to 1
+  lower_bound = repeat(count_digits(target))
+  target.downto(lower_bound) do |upper|
+    upper.downto(lower_bound) do |lower|
       product = upper * lower
-      if (palindrome2?(product) && product > max)
+      if (is_palindrome(product) && product > max)
         max = product
-        result = [lower, upper, product]
+        result[0] = lower
+        result[1] = upper
       end
     end
   end
   result
 end
 
-targets = [9, 99, 999, 9999]
+# this method generates a palindrome by combining a number with its own
+# reverse
+def make_palindrome(first_half)
+  forward = first_half.to_s
+  backward = forward.reverse
+  (forward + backward).to_i
+end
+
+# this method is based on http://www.mathblog.dk/project-euler-problem-4/
+def mathblog(target)
+  result = []
+  found = false
+  index = target-1
+  while (!found)
+    # first create a fictional palindrome from index, e.g. 998899 from 998
+    palindrome = make_palindrome(index)
+    # then look for a number by which palindrome is evenly divisible
+    target.downto(repeat(count_digits(target))) do |i|
+      # that number has to be between the square root of the palindrome(1)
+      # and the target number(2)
+      # (1) any factor less than the square root of the palindrome will have
+      # a corresponding factor larger than the square root.
+      # (2) problem requires the factor to be less than target
+      if (i*i < palindrome || palindrome/i > target)
+        break
+      end
+      if (palindrome % i == 0)
+        found = true
+        result[0] = palindrome / i
+        result[1] = i
+        break
+      end
+    end
+    index -= 1
+  end
+  result
+end
+
+targets = [99, 999, 9999]
 targets.each do |target|
-  puts("Largest #{target.to_s.size}-digit: #{largest_palindrome_product(target)}")
+  result = brute_force(target)
+  puts("brute-force: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
+end
+targets.each do |target|
+  result = mathblog(target)
+  puts("optimized: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
 end
