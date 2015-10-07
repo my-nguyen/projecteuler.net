@@ -4,7 +4,7 @@ import java.util.*;
 
 class euler_002
 {
-  static int brute_force(int limit)
+  static int mine_sum(int limit)
   {
     int fib1 = 1;
     int fib2 = 1;
@@ -27,7 +27,7 @@ class euler_002
   // Fn-3 + Fn-4 + Fn-3 +Fn-3 +Fn-4 = 3Fn-3 + 2Fn-4 =
   // 3Fn-3 + Fn-4 + Fn-5 + Fn-6) =
   // 4Fn-3 + Fn-6 (since Fn-4 + Fn-5 = Fn-3)
-  static int even_only(int limit)
+  static int even_sum(int limit)
   {
     int fib3 = 2;
     int fib6 = 0;
@@ -47,7 +47,7 @@ class euler_002
   public static void main(String[] args)
   {
     int limit = 4000000;
-    System.out.println("Brute force: " + brute_force(limit));
-    System.out.println("Only even numbers: " + even_only(limit));
+    System.out.println("Mine: " + mine_sum(limit));
+    System.out.println("Even only: " + even_sum(limit));
   }
 }

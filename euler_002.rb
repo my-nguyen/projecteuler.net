@@ -1,6 +1,6 @@
 # for an explanation to the "Even Only" solution, refer to:
 # http://www.mathblog.dk/project-euler-problem-2/
-def brute_force(limit)
+def mine_sum(limit)
   fib1 = 1
   fib2 = 1
   fib3 = 0
@@ -22,7 +22,7 @@ end
 # Fn-3 + Fn-4 + Fn-3 +Fn-3 +Fn-4 = 3Fn-3 + 2Fn-4 =
 # 3Fn-3 + Fn-4 + Fn-5 + Fn-6) =
 # 4Fn-3 + Fn-6 (since Fn-4 + Fn-5 = Fn-3)
-def even_only(limit)
+def even_sum(limit)
   fib3 = 2
   fib6 = 0
   result = 2
@@ -38,5 +38,5 @@ def even_only(limit)
 end
 
 limit = 4000000
-puts("Brute force: #{brute_force(limit)}")
-puts("Only even numbers: #{even_only(limit)}")
+puts("Mine: #{mine_sum(limit)}")
+puts("Even only: #{even_sum(limit)}")

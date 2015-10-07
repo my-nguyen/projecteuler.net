@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-int brute_force(int limit)
+int mine_sum(int limit)
 {
   int fib1 = 1;
   int fib2 = 1;
@@ -26,7 +26,7 @@ int brute_force(int limit)
 // Fn-3 + Fn-4 + Fn-3 +Fn-3 +Fn-4 = 3Fn-3 + 2Fn-4 =
 // 3Fn-3 + Fn-4 + Fn-5 + Fn-6) =
 // 4Fn-3 + Fn-6 (since Fn-4 + Fn-5 = Fn-3)
-int even_only(int limit)
+int even_sum(int limit)
 {
   int fib3 = 2;
   int fib6 = 0;
@@ -46,6 +46,6 @@ int even_only(int limit)
 int main()
 {
   int limit = 4000000;
-  cout << "Brute force: " << brute_force(limit) << endl;
-  cout << "Only even numbers: " << even_only(limit) << endl;
+  cout << "Mine: " << mine_sum(limit) << endl;
+  cout << "Even only: " << even_sum(limit) << endl;
 }
