@@ -1,4 +1,4 @@
-// for an explanation to the geometric/arithmetic solution, refer to:
+// for an explanation to the geo_sum/arithmetic solution, refer to:
 // http://www.mathblog.dk/project-euler-problem-1/
 #include <iostream>
 #include <vector>
@@ -12,7 +12,7 @@ int sum(vector<int>& array)
   return sum;
 }
 
-int brute_force(int limit)
+int mine_sum(int limit)
 {
   vector<int> multiples;
 
@@ -38,7 +38,7 @@ int sum_of_multiples(int divisor, int limit)
   return divisor * (N * (N+1) / 2);
 }
 
-int geometric(int limit)
+int geo_sum(int limit)
 {
   return sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit);
 }
@@ -46,6 +46,6 @@ int geometric(int limit)
 int main()
 {
   int limit = 999;
-  cout << "Brute force: " << brute_force(limit) << endl;
-  cout << "Geometric: " << geometric(limit) << endl;
+  cout << "Brute force: " << mine_sum(limit) << endl;
+  cout << "Geometric: " << geo_sum(limit) << endl;
 }

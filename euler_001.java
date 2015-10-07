@@ -1,4 +1,4 @@
-// for an explanation to the geometric/arithmetic solution, refer to:
+// for an explanation to the geo_sum/arithmetic solution, refer to:
 // http://www.mathblog.dk/project-euler-problem-1/
 import java.util.*;
 
@@ -12,7 +12,7 @@ class euler_001
     return sum;
   }
 
-  static int brute_force(int limit)
+  static int mine_sum(int limit)
   {
     List<Integer> multiples = new ArrayList<>();
 
@@ -38,7 +38,7 @@ class euler_001
     return divisor * (N * (N+1) / 2);
   }
 
-  static int geometric(int limit)
+  static int geo_sum(int limit)
   {
     return sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit);
   }
@@ -46,7 +46,7 @@ class euler_001
   public static void main(String[] args)
   {
     int limit = 999;
-    System.out.println("Brute force: " + brute_force(limit));
-    System.out.println("Geometric: " + geometric(limit));
+    System.out.println("Mine: " + mine_sum(limit));
+    System.out.println("Geometric: " + geo_sum(limit));
   }
 }

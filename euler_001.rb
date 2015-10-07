@@ -2,7 +2,7 @@ def sum(array)
   array.reduce(:+)
 end
 
-def brute_force(limit)
+def mine_sum(limit)
   multiples = []
 
   # collect all multiples of 3
@@ -29,10 +29,10 @@ def sum_of_multiples(divisor, limit)
   divisor * (n * (n+1) / 2)
 end
 
-def geometric(limit)
+def geo_sum(limit)
   sum_of_multiples(3, limit) + sum_of_multiples(5, limit) - sum_of_multiples(15, limit)
 end
 
 limit = 999
-puts("Brute force: #{brute_force(limit)}")
-puts("Geometric: #{geometric(limit)}")
+puts("Brute force: #{mine_sum(limit)}")
+puts("Geometric: #{geo_sum(limit)}")
