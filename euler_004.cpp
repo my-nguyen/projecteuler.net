@@ -28,7 +28,6 @@ int count_digits(int number)
 // this method returns number 1, repeated as many times as specified in param
 int repeat(int times)
 {
-// cout << "repeat " << times << " times: " << stoi(string(times, '1')) << endl;
   return stoi(string(times, '1'));
 }
 
@@ -65,7 +64,6 @@ int make_palindrome(int first_half)
   string forward = to_string(first_half);
   string backward(forward);
   reverse(backward.begin(), backward.end());
-// cout << "forward: " << forward << ", backward: " << backward << ", result: " << stoi(forward+backward) << endl;
   return stoi(forward + backward);
 }
 

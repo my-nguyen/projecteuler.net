@@ -1,7 +1,7 @@
 class euler_005
 {
-  // greatest common divisor of 2 integers
-  private static long gcd(long one, long two)
+  // this method returns the greatest common divisor of 2 integers
+  static long gcd(long one, long two)
   {
     while (one != 0)
     {
@@ -12,32 +12,47 @@ class euler_005
     return two;
   }
 
-  // least common multiple of 2 integers
-  // must declare type of parameter one and return as long; otherwise an overflow
+  // this method returns the least common multiple of 2 integers
+  // must declare parameter type and return type as long; otherwise an overflow
   // would occur at one * two when one becomes too large.
-  private static long lcm(long one, long two)
+  static long lcm(long one, long two)
   {
     return (one * two) / gcd(one, two);
   }
 
-  // least common multiple of an array of more than 2 integers
-  private static long lcm_array(int array[], int size)
+  // this method returns the least common multiple of an array of more than 2 integers
+  static long my_algorithm(int size)
   {
-    long multiple = lcm(array[0], array[1]);
-    for (int i = 2; i < size; i++)
-      multiple = lcm(multiple, array[i]);
+    long multiple = 2;
+    for (int i = 3; i <= size; i++)
+      multiple = lcm(multiple, i);
     return multiple;
+  }
+
+  static long brute_force(int size)
+  {
+    int i = size;
+    int j = 0;
+    while (j <= size)
+    {
+      i += size;
+      j = 2;
+      while (j <= size)
+        if (i % j != 0)
+          break;
+        else
+          j += 1;
+    }
+    return i;
   }
 
   public static void main(String[] args)
   {
-    int array[] = new int[20];
-    for (int i = 0; i < array.length; i++)
-      array[i] = i+1;
-
-    // test with different sizes
-    int sizes[] = {5, 10, 15, 20};
+    int[] sizes = { 5, 10, 15, 20 };
     for (int size : sizes)
-      System.out.println("LCM(1.." + size + "): " + lcm_array(array, size));
+    {
+      System.out.println("My algorithm(" + size + "): " + my_algorithm(size));
+      System.out.println("Brute force(" + size + "): " + brute_force(size));
+    }
   }
 }

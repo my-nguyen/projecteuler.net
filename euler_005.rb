@@ -1,35 +1,38 @@
-# greatest common divisor of 2 integers
-def gcd(one, two)
-  while (one != 0)
-    tmp = one
-    one = two % one
-    two = tmp
-  end
-  two
-end
-
-# least common multiple of 2 integers
+# this method returns the least common multiple of 2 integers
+# must declare parameter type and return type as long; otherwise an overflow
+# would occur at one * two when one becomes too large.
 def lcm(one, two)
-  (one * two) / gcd(one, two)
+  one.lcm(two)
 end
 
-# least common multiple of an array of more than 2 integers
-def lcm_array(array)
-  multiple = lcm(array[0], array[1])
-  2.upto(array.size-1) do |i|
-    multiple = lcm(multiple, array[i])
+# this method returns the least common multiple of an array of more than 2 integers
+def my_algorithm(size)
+  multiple = 2
+  3.upto(size) do |i|
+    multiple = lcm(multiple, i)
   end
   multiple
 end
 
-# fill array with 20 integers from 1 to 20
-array = []
-20.times do |i|
-  array[i] = i+1
+def brute_force(size)
+  i = size
+  j = 0
+  while (j <= size)
+    i += size
+    j = 2
+    while (j <= size)
+      if (i % j != 0)
+        break
+      else
+        j += 1
+      end
+    end
+  end
+  i
 end
 
-# test with different sizes
-sizes = [5, 10, 15, 20]
+sizes = [ 5, 10, 15, 20 ]
 sizes.each do |size|
-  puts("LCM(1..#{size}): #{lcm_array(array[0, size])}")
+  puts("My algorithm(#{size}): #{my_algorithm(size)}")
+  puts("Brute force(#{size}): #{brute_force(size)}")
 end
