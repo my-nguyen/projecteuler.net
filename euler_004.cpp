@@ -33,7 +33,7 @@ int repeat(int times)
 
 // this method finds the largest palindrome found in all products of 1-digit,
 // 2-digit and 3-digit numbers
-vector<int> brute_force(int target)
+vector<int> mine_palindrome(int target)
 {
   vector<int> result;
   int max = 1;
@@ -67,8 +67,8 @@ int make_palindrome(int first_half)
   return stoi(forward + backward);
 }
 
-// this method is based on http://www.mathblog.dk/project-euler-problem-4/
-vector<int> mathblog(int target)
+// this method is based on http://www.optimized.dk/project-euler-problem-4/
+vector<int> optimized(int target)
 {
   vector<int> result;
   bool found = false;
@@ -105,12 +105,12 @@ int main()
   int targets[] = {99, 999, 9999};
   for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
   {
-    vector<int> result = brute_force(targets[i]);
-    cout << "brute-force: " << result[0] << "x" << result[1] << " = " << result[0]*result[1] << endl;
+    vector<int> result = mine_palindrome(targets[i]);
+    cout << "Mine: " << result[0] << "x" << result[1] << " = " << result[0]*result[1] << endl;
   }
   for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
   {
-    vector<int> result = mathblog(targets[i]);
-    cout << "optimized: " << result[0] << "x" << result[1] << " = " << result[0]*result[1] << endl;
+    vector<int> result = optimized(targets[i]);
+    cout << "Optimized: " << result[0] << "x" << result[1] << " = " << result[0]*result[1] << endl;
   }
 }

@@ -20,7 +20,7 @@ end
 
 # this method finds the largest palindrome found in all products of 1-digit,
 # 2-digit and 3-digit numbers
-def brute_force(target)
+def mine_palindrome(target)
   result = []
   max = 1
   # use 2 indices: upper starts from target down to 1, and lower starts from
@@ -47,8 +47,8 @@ def make_palindrome(first_half)
   (forward + backward).to_i
 end
 
-# this method is based on http://www.mathblog.dk/project-euler-problem-4/
-def mathblog(target)
+# this method is based on http://www.optimized.dk/project-euler-problem-4/
+def optimized(target)
   result = []
   found = false
   index = target-1
@@ -79,10 +79,10 @@ end
 
 targets = [99, 999, 9999]
 targets.each do |target|
-  result = brute_force(target)
-  puts("brute-force: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
+  result = mine_palindrome(target)
+  puts("Mine: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
 end
 targets.each do |target|
-  result = mathblog(target)
-  puts("optimized: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
+  result = optimized(target)
+  puts("Optimized: #{result[0]}x#{result[1]} = #{result[0]*result[1]}")
 end

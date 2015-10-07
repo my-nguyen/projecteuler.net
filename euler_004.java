@@ -31,7 +31,7 @@ class euler_004
 
   // this method finds the largest palindrome found in all products of 1-digit,
   // 2-digit and 3-digit numbers
-  static int[] brute_force(int target)
+  static int[] mine_palindrome(int target)
   {
     int[] result = new int[2];
     int max = 1;
@@ -63,8 +63,8 @@ class euler_004
     return Integer.parseInt(forward + backward);
   }
 
-  // this method is based on http://www.mathblog.dk/project-euler-problem-4/
-  static int[] mathblog(int target)
+  // this method is based on http://www.optimized.dk/project-euler-problem-4/
+  static int[] optimized(int target)
   {
     int[] result = new int[2];
     boolean found = false;
@@ -101,13 +101,13 @@ class euler_004
     int targets[] = {99, 999, 9999};
     for (int target : targets)
     {
-      int result[] = brute_force(target);
-      System.out.println("brute-force: " + result[0] + "x" + result[1] + " = " + result[0]*result[1]);
+      int result[] = mine_palindrome(target);
+      System.out.println("Mine: " + result[0] + "x" + result[1] + " = " + result[0]*result[1]);
     }
     for (int target : targets)
     {
-      int[] result = mathblog(target);
-      System.out.println("optimized: " + result[0] + "x" + result[1] + " = " + result[0]*result[1]);
+      int[] result = optimized(target);
+      System.out.println("Optimized: " + result[0] + "x" + result[1] + " = " + result[0]*result[1]);
     }
   }
 }
