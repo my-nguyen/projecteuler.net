@@ -21,7 +21,7 @@ class euler_005
   }
 
   // this method returns the least common multiple of an array of more than 2 integers
-  static long my_algorithm(int size)
+  static long mine_lcm(int size)
   {
     long multiple = 2;
     for (int i = 3; i <= size; i++)
@@ -29,7 +29,7 @@ class euler_005
     return multiple;
   }
 
-  static long brute_force(int size)
+  static long brute_lcm(int size)
   {
     int i = size;
     int j = 0;
@@ -51,8 +51,8 @@ class euler_005
     int[] sizes = { 5, 10, 15, 20 };
     for (int size : sizes)
     {
-      System.out.println("My algorithm(" + size + "): " + my_algorithm(size));
-      System.out.println("Brute force(" + size + "): " + brute_force(size));
+      System.out.println("Mine(" + size + "): " + mine_lcm(size));
+      System.out.println("Brute force(" + size + "): " + brute_lcm(size));
     }
   }
 }

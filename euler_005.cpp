@@ -23,7 +23,7 @@ long lcm(long one, long two)
 }
 
 // this method returns the least common multiple of an array of more than 2 integers
-long my_algorithm(int size)
+long mine_lcm(int size)
 {
   long multiple = 2;
   for (int i = 3; i <= size; i++)
@@ -31,7 +31,7 @@ long my_algorithm(int size)
   return multiple;
 }
 
-long brute_force(int size)
+long brute_lcm(int size)
 {
   int i = size;
   int j = 0;
@@ -53,7 +53,7 @@ int main()
   int sizes[] = { 5, 10, 15, 20 };
   for (int i = 0; i < sizeof(sizes)/sizeof(int); i++)
   {
-    cout << "My algorithm(" << sizes[i] << "): " << my_algorithm(sizes[i]) << endl;
-    cout << "Brute force(" << sizes[i] << "): " << brute_force(sizes[i]) << endl;
+    cout << "Mine(" << sizes[i] << "): " << mine_lcm(sizes[i]) << endl;
+    cout << "Brute force(" << sizes[i] << "): " << brute_lcm(sizes[i]) << endl;
   }
 }

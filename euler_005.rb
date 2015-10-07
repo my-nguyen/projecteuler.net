@@ -6,7 +6,7 @@ def lcm(one, two)
 end
 
 # this method returns the least common multiple of an array of more than 2 integers
-def my_algorithm(size)
+def mine_lcm(size)
   multiple = 2
   3.upto(size) do |i|
     multiple = lcm(multiple, i)
@@ -14,7 +14,7 @@ def my_algorithm(size)
   multiple
 end
 
-def brute_force(size)
+def brute_lcm(size)
   i = size
   j = 0
   while (j <= size)
@@ -33,6 +33,6 @@ end
 
 sizes = [ 5, 10, 15, 20 ]
 sizes.each do |size|
-  puts("My algorithm(#{size}): #{my_algorithm(size)}")
-  puts("Brute force(#{size}): #{brute_force(size)}")
+  puts("Mine(#{size}): #{mine_lcm(size)}")
+  puts("Brute force(#{size}): #{brute_lcm(size)}")
 end
