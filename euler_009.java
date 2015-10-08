@@ -1,6 +1,6 @@
-// According to Wikipedia, Euclid's formula is a fundamental formula for
-// generating Pythagorean triples given an arbitrary pair of positive integers
-// m and n with m > n. The formula states that the integers
+// Wikipedia: Euclid's formula is fundamental for generating Pythagorean
+// triplets given an arbitrary pair of positive integers m and n with m > n. The
+// formula states that the integers:
 // a = m*m - n*n
 // b = 2*m*n
 // c = m*m + n*n
@@ -9,22 +9,22 @@ import java.util.Arrays;
 
 class euler_009
 {
-  // This method returns the sum of a+b+c
-  // a + b + c = m*m - n*n + 2*m*n + m*m + n*n, or 2*m*(m+n)
+  // This method returns the sum of a, b, and c
+  // a + b + c = m*m - n*n + 2*m*n + m*m + n*n = 2*m*m + 2*m*n = 2*m*(m+n)
   static int sum_abc(int m, int n)
   {
     return 2 * m * (m + n);
   }
 
   final static int TRIPLET = 3;
-  // This method returns a pythagorean triplet [a, b, c] if such a triplet is found.
-  // if not it returns nil.
+  // This method returns a pythagorean triplet [a, b, c] whose sum equals target
+  // if such a triplet is found. if not it returns nil.
   static int[] pythagorean_triplets(int target)
   {
     int[] triplet = null;
     int m = 0;
-    // since c = m*m + n*n, and a+b+c = 1000, both m*m and n*n must be < 1000,
-    // or m <= 31 and n <= 31
+    // since c = m*m + n*n, and a+b+c = target, both m*m and n*n must be less
+    // than target, or m <= sqrt(target) and n <= sqrt(target)
     while (m <= (int)Math.sqrt(target))
     {
       m += 1;
@@ -38,14 +38,14 @@ class euler_009
           n += 1;
         else if (sum == target)
         {
-          // m equals n means (m*m - n*n).abs equals 0, OR a equals 0 and b equals c,
-          // which violates the requirement a < b < c. since the largest n is reached,
-          // restart with the next m and n at 1.
+          // m == n means m*m - n*n == 0, OR a == 0 and b == c, which violates
+          // the requirement a < b < c. since the largest n is reached, skip to
+          // the next loop with m and with n at 1.
           if (m == n)
             break;
           else
           {
-            // m and n are found. return immediately the triplet [a, b, c]
+            // m and n are found. collect and return the triplet [a, b, c]
             triplet = new int[TRIPLET];
             triplet[0] = Math.abs(m*m - n*n);
             triplet[1] = 2*m*n;
@@ -54,8 +54,8 @@ class euler_009
             return triplet;
           }
         }
+        // the largest n is reached. skip to the next loop with m and with n at 1
         else
-          // the largest n is reached. let's restart with the next m and n at 1
           break;
       }
     }
@@ -76,15 +76,10 @@ class euler_009
   // this method converts an array of 3 integers into a printable string format
   static String toString(int[] triplet)
   {
-    StringBuilder out = new StringBuilder();
-    out.append("[");
-    for (int i = 0; i < TRIPLET; i++)
-    {
-      if (i != 0)
-        out.append(", ");
-      out.append(triplet[i]);
-    }
-    return out.append("]").toString();
+    Integer[] copy = new Integer[triplet.length];
+    for (int i = 0; i < triplet.length; i++)
+      copy[i] = triplet[i];
+    return Arrays.asList(copy).toString();
   }
 
   public static void main(String[] args)
