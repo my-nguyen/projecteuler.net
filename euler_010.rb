@@ -8,10 +8,10 @@
 # 1500000     82074443256     2201          .72
 # 2000000     142913828922    3850          .97
 #
-require_relative 'primes'
+require './sieve.rb'
 
 targets = [10, 100000, 500000, 1000000, 1500000, 2000000]
 targets.each do |target|
-  primes = Primes.new(target)
+  primes = Sieve.new(target)
   puts("Sum primes(#{target}): #{primes.sum}")
 end
