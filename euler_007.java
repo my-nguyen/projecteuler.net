@@ -99,7 +99,7 @@ class euler_007
     */
     for (int i = 0; i < sizes.length; i++)
     {
-      sieve primes = new sieve(sizes[i]);
+      Sieve primes = new Sieve(sizes[i]);
       System.out.println("Sieve(" + targets[i] + "): " + primes.index(targets[i]));
     }
     for (int target : targets)

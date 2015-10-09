@@ -2,7 +2,7 @@ import java.util.BitSet;
 
 // Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
 // up to a target number.
-class sieve
+class Sieve
 {
   BitSet field;
 
@@ -12,7 +12,7 @@ class sieve
   // the 50,001st prime is 611,957
   // This constructor fills an array of bools up to a certain size, with prime
   // numbers marked as ON bit and non-prime as OFF
-  sieve(int size)
+  Sieve(int size)
   {
     field = new BitSet(size);
 

@@ -100,7 +100,7 @@ int main()
   */
   for (int i = 0; i < sizeof(sizes)/sizeof(int); i++)
   {
-    sieve_t sieve(sizes[i]);
+    Sieve sieve(sizes[i]);
     cout << "Sieve(" << targets[i] << "): " << sieve.index(targets[i]) << endl;
   }
   for (int i = 0; i < sizeof(targets)/sizeof(int); i++)

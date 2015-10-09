@@ -6,10 +6,10 @@ using namespace boost;
 
 // Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
 // up to a target number.
-class sieve_t
+class Sieve
 {
 public:
-  sieve_t(int size);
+  Sieve(int size);
 
   unsigned long index(int position);
 

@@ -8,7 +8,7 @@ using namespace std;
 // the 50,001st prime is 611,957
 // This constructor fills an array of bools up to a certain size, with prime
 // numbers marked as ON bit and non-prime as OFF
-sieve_t::sieve_t(int size) : field(size)
+Sieve::Sieve(int size) : field(size)
 {
   // initialize all bits to ON
   field.set();
@@ -38,7 +38,7 @@ sieve_t::sieve_t(int size) : field(size)
 // this method returns the natural number of the prime number at position. for
 // example, for the prime number at 100, it returns 541. for the prime number
 // at 1000, it returns 7919. for the prime number at 5000, it returns 48611.
-unsigned long sieve_t::index(int position)
+unsigned long Sieve::index(int position)
 {
   // index to the entire bool array
   unsigned long i = 1;
@@ -54,7 +54,7 @@ unsigned long sieve_t::index(int position)
 }
 
 // this method returns the sum of all the prime numbers within the bools array
-unsigned long sieve_t::sum()
+unsigned long Sieve::sum()
 {
   // sum includes 2, the first prime number (at index 0) so that index i
   // (which starts at 1) can increment by 2
