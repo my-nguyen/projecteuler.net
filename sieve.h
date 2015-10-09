@@ -9,15 +9,14 @@ using namespace boost;
 class sieve_t
 {
 public:
-  sieve_t(int position);
+  sieve_t(int size);
 
-  unsigned long index();
+  unsigned long index(int position);
 
   unsigned long sum();
 
 private:
   dynamic_bitset<> field;
-  int position;
 };
 
 #endif

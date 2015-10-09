@@ -93,14 +93,15 @@ int sieve3_index(int position)
 int main()
 {
   int targets[] = { 6, 11, 101, 1001, 10001, 50001 };
+  int sizes[] = { 20, 40, 600, 8000, 105000, 612000 };
   /*
   for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
     cout << "Worst(" << targets[i] << "): " << worst_index(targets[i]) << endl;
   */
-  for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
+  for (int i = 0; i < sizeof(sizes)/sizeof(int); i++)
   {
-    sieve_t sieve(targets[i]);
-    cout << "Sieve(" << targets[i] << "): " << sieve.index() << endl;
+    sieve_t sieve(sizes[i]);
+    cout << "Sieve(" << targets[i] << "): " << sieve.index(targets[i]) << endl;
   }
   for (int i = 0; i < sizeof(targets)/sizeof(int); i++)
     cout << "Modified Sieve(" << targets[i] << "): " << sieve2_index(targets[i]) << endl;

@@ -1,4 +1,4 @@
-require_relative 'sieve'
+require './sieve.rb'
 
 def worst_prime(number)
   if (number == 2)
@@ -88,14 +88,15 @@ def sieve3_index(position)
 end
 
 targets = [ 6, 11, 101, 1001, 10001, 50001 ]
+sizes = [ 20, 40, 600, 8000, 105000, 612000 ]
 =begin
 targets.each do |target|
   puts("Worst(#{target}): #{worst_index(target)}")
 end
 =end
-targets.each do |target|
-  sieve = Sieve.new(target)
-  puts("Sieve(#{target}): #{sieve.index()}")
+sizes.each_index do |i|
+  sieve = Sieve.new(sizes[i])
+  puts("Sieve(#{targets[i]}): #{sieve.index(targets[i])}")
 end
 targets.each do |target|
   puts("Modified Sieve(#{target}): #{sieve2_index(target)}")

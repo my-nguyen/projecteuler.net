@@ -92,14 +92,15 @@ class euler_007
   public static void main(String[] args)
   {
     int[] targets = { 6, 11, 101, 1001, 10001, 50001 };
+    int[] sizes = { 20, 40, 600, 8000, 105000, 612000 };
     /*
     for (int target : targets)
       System.out.println("Worst(" + target + "): " + worst_index(target));
     */
-    for (int target : targets)
+    for (int i = 0; i < sizes.length; i++)
     {
-      sieve primes = new sieve(target);
-      System.out.println("Sieve(" + target + "): " + primes.index());
+      sieve primes = new sieve(sizes[i]);
+      System.out.println("Sieve(" + targets[i] + "): " + primes.index(targets[i]));
     }
     for (int target : targets)
       System.out.println("Modified Sieve(" + target + "): " + sieve2_index(target));

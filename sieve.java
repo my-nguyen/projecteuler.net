@@ -5,19 +5,15 @@ import java.util.BitSet;
 class sieve
 {
   BitSet field;
-  int index;
 
-  // the 20th prime is 71, the 200th prime is 1,223, the 2,000th prime is
-  // 17,389, the 20,000th prime is 224,737, the 200,000th prime is 2,750,159,
-  // and the 2,000,000th prime is 32,452,843 so the ratio of natural to prime
-  // is roughly 17. round this ratio up to 20.
-  final int NATURAL_2_PRIME = 20;
+  // the 101st prime is 547
+  // the 1,001st prime is 7,927
+  // the 10,001st prime is 104,743
+  // the 50,001st prime is 611,957
   // This constructor fills an array of bools up to a certain size, with prime
   // numbers marked as ON bit and non-prime as OFF
-  sieve(int position)
+  sieve(int size)
   {
-    index = position;
-    int size = position * NATURAL_2_PRIME;
     field = new BitSet(size);
 
     // initialize all bits to ON
@@ -45,31 +41,34 @@ class sieve
     }
   }
 
-  // this method returns the natural number of the prime number at index. for
+  // this method returns the natural number of the prime number at position. for
   // example, for the prime number at 100, it returns 541. for the prime number
   // at 1000, it returns 7919. for the prime number at 5000, it returns 48611.
-  int index()
+  int index(int position)
   {
     // index to the entire bool array
-    int result = 1;
+    int i = 1;
     // index by prime numbers
     int j = 1;
-    while (j < index)
+    while (j < position)
     {
-      result += 2;
-      if (field.get(result))
+      i += 2;
+      if (field.get(i))
         j += 1;
     }
-    return result;
+    return i;
   }
 
+  // this method returns the sum of all prime numbers in the bool array.
   long sum()
   {
-    long sum = 0;
-    // iterate the entire bitfield
-    for (int i = 0; i < field.size(); i++)
+    // sum includes 2, the first prime number (at index 0) so that index i
+    // (which starts at 1) can increment by 2
+    long sum = 2;
+    for (int i = 1; i < field.size(); i += 2)
       if (field.get(i))
         sum += i;
+
     return sum;
   }
 }
