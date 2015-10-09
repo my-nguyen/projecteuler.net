@@ -1,22 +1,23 @@
-import java.util.*;
+import java.util.BitSet;
 
-class Primes
+// Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
+// up to a target number.
+class sieve
 {
   BitSet field;
   int index;
 
-  // Sieve of Eratosthenes algorithm (from wikipedia) to find all prime numbers
-  // up to a target number.
-  // This constructor fills an array of bools from 2 to order, with prime
+  // the 20th prime is 71, the 200th prime is 1,223, the 2,000th prime is
+  // 17,389, the 20,000th prime is 224,737, the 200,000th prime is 2,750,159,
+  // and the 2,000,000th prime is 32,452,843 so the ratio of natural to prime
+  // is roughly 17. round this ratio up to 20.
+  final int NATURAL_2_PRIME = 20;
+  // This constructor fills an array of bools up to a certain size, with prime
   // numbers marked as ON bit and non-prime as OFF
-  Primes(int position)
+  sieve(int position)
   {
     index = position;
-
-    // the 100th prime is 541, the 1000th prime is 7919, the 10000th prime is
-    // 104729, the 100000th prime is 1299709 so size is roughly 13 times the
-    // prime number/position
-    int size = position * 20;
+    int size = position * NATURAL_2_PRIME;
     field = new BitSet(size);
 
     // initialize all bits to ON
@@ -44,13 +45,13 @@ class Primes
     }
   }
 
-  // this method returns the natural number of the prime number at position.
-  // for example, for prime at position 100, it returns 541. for prime at 1000,
-  // it returns 7919. for prime at 5000, it returns 48611.
-  long index()
+  // this method returns the natural number of the prime number at index. for
+  // example, for the prime number at 100, it returns 541. for the prime number
+  // at 1000, it returns 7919. for the prime number at 5000, it returns 48611.
+  int index()
   {
     // index to the entire bool array
-    long result = 1;
+    int result = 1;
     // index by prime numbers
     int j = 1;
     while (j < index)
@@ -66,22 +67,9 @@ class Primes
   {
     long sum = 0;
     // iterate the entire bitfield
-    for (int i = 0; i < _field.size(); i++)
-      if (_field.get(i))
+    for (int i = 0; i < field.size(); i++)
+      if (field.get(i))
         sum += i;
     return sum;
-  }
-}
-
-class euler_010
-{
-
-  public static void main(String[] args)
-  {
-    int targets[] = {10, 100000, 500000, 1000000, 1500000, 2000000};
-    for (int target : targets)
-    {
-      System.out.println("Sum primes(" + target + "): " + sieve_index(target));
-    }
   }
 }
