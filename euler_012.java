@@ -2,10 +2,10 @@ import java.util.*;
 
 class euler_012
 {
-  // find all divisors of a target number
-  static List<Integer> find_divisors(int number)
+  // this method returns a list of all divisors of a target number
+  static List<Integer> get_divisors(int number)
   {
-    List<Integer> divisors = new ArrayList<Integer>();
+    List<Integer> divisors = new ArrayList<>();
     // 1 is always a divisor
     divisors.add(1);
 
@@ -34,34 +34,36 @@ class euler_012
 
   public static void main(String[] args)
   {
-    // divisors contains all the divisors/factors of a triangle, for example:
-    // triangle  divisors
-    //      1    1
-    //      3    1,3
-    //      6    1,2,3,6
-    //     10    1,2,5,10
-    //     15    1,3,5,15
-    //     21    1,3,7,21
-    //     28    1,2,4,7,14,28
-    List<Integer> divisors = new ArrayList<Integer>();
-    // let's start numbering at 2 instead of 1, which means triangles already
-    // contains number 1
-    int number = 2;
-    List<Integer> triangles = new ArrayList<Integer>();
+    List<Integer> triangles = new ArrayList<>();
+    // special case when number == 1: its triangle number is also 1
     triangles.add(1);
-    // in the beginning, target is set at 1, but as a target is reached, a new
-    // target is set by adding 1 to the number of divisors of the current
-    // triangle. since the number of divisors is an arbitrary number that is
-    // greater than the current target, the target gets increased pretty fast as
-    // shown in the resulting number of divisors:
+    // skip 1 and start with 2
+    int number = 2;
+    // initially target is set to 1. then while incrementing (natural) number,
+    // take its triangle number, then take all the divisors of the triangle
+    // number. once the count of divisors becomes greater than or equal to
+    // target, then a new target is set by adding 1 to the divisor count. keep
+    // this cycle until divisor count reaches at least 500. note the target gets
+    // increased pretty fast as shown in the resulting number of divisors:
     // 2, 4, 6, 9, 16, 18, 20, 24, 36, 40, 48, 90, 112, 128, 144, 162, 168, 192,
-    // 240, 320, 480, 576.
+    // 240, 320, 480, 576, etc.
     int target = 1;
-    // eventual target is 500, as required by the program
+    // eventual target is 500
     while (target < 500)
     {
-      // triangle of 1
-      int triangle = 1;
+      // divisors contains all the divisors/factors of a triangle, for example:
+      // triangle  divisors
+      //      1    1
+      //      3    1,3
+      //      6    1,2,3,6
+      //     10    1,2,5,10
+      //     15    1,3,5,15
+      //     21    1,3,7,21
+      //     28    1,2,4,7,14,28
+      List<Integer> divisors = new ArrayList<>();
+      int triangle = 0;
+      // in each iteration, the goal is to find a natural number whose triangle
+      // number has a divisor count that is greater than or equal target.
       while (divisors.size() <= target)
       {
         // triangle is the sum of the previous entry and current number
@@ -69,13 +71,12 @@ class euler_012
         // retain that sum
         triangles.add(triangle);
         // get all divisors for that sum
-        divisors = find_divisors(triangle);
+        divisors = get_divisors(triangle);
         // go to next number
         number += 1;
       }
-      System.out.println("First that reach " + divisors.size() + ": number "
-        + (number-1) + ", triangle " + triangle);
-      // set a new target based on the number of divisors of the current triangle
+      System.out.println("Target: " + target + ", actual: " + divisors.size() + ", number: " + (number-1) + ", triangle: " + triangle);
+      // set a new target based on the divisor count of the current triangle
       target = divisors.size() + 1;
     }
   }
