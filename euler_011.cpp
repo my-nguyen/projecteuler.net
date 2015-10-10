@@ -1,233 +1,225 @@
 #include <iostream>
-#include <cstring> // strtok()
-#include <cstdlib> // atoi()
+#include <vector>
+#include <string>
+#include <boost/tokenizer.hpp>
 using namespace std;
+using namespace boost;
 
-#define MAX_SLICE 4
-#define MAX_ROW 20
-#define MAX_COLUMN 20
-#define NOT_FOUND -1
+namespace Constants
+{
+  const int MAX_SLICE = 4;
+  const int MAX_ROW = 20;
+  const int MAX_COLUMN = 20;
+}
 
-class base_array_t
+// helper method to print out contents of a vector<int>. while this feature is
+// not available in C++, it's built-in for Java and Ruby
+string to_string(vector<int>& data)
+{
+  string builder;
+  builder.append("[");
+  for (int i = 0; i < data.size(); i++)
+    builder.append(std::to_string(data[i])).append(", ");
+  builder.pop_back();
+  builder.pop_back();
+  builder.append("]");
+  return builder;
+}
+
+class Slice
 {
 public:
-  base_array_t() {}
-  base_array_t(int array[], int size);
-  virtual ostream& output(ostream& out);
-  friend ostream& operator<<(ostream& out, base_array_t& array);
+  vector<int> data;
 
-protected:
-  int data[MAX_ROW];
-  int count;
-};
-
-base_array_t::base_array_t(int array[], int size)
-{
-  count = size;
-  for (int i = 0; i < count; i++)
-    data[i] = array[i];
-}
-
-// helper method to print out all numbers in an array
-ostream& base_array_t::output(ostream& out)
-{
-  for (int i = 0; i < count; i++)
-    out << " " << data[i];
-  return out;
-}
-
-ostream& operator<<(ostream& out, base_array_t& array)
-{
-  return array.output(out);
-}
-
-struct slice_t : public base_array_t
-{
-  slice_t();
-  slice_t(int array[]) : base_array_t(array, MAX_SLICE) {}
-  int find(int target);
-  int product();
-  slice_t& operator=(const slice_t& rhs);
-  ostream& output(ostream& out);
-  friend class array_t;
-};
-
-slice_t::slice_t()
-{
-  count = MAX_SLICE;
-  for (int i = 0; i < count; i++)
-    data[i] = 0;
-}
-
-int slice_t::find(int target)
-{
-  for (int i = 0; i < count; i++)
-    if (data[i] == target)
-      return i;
-  return NOT_FOUND;
-}
-
-int slice_t::product()
-{
-  int result = 1;
-  for (int i = 0; i < count; i++)
-    result *= data[i];
-  return result;
-}
-
-slice_t& slice_t::operator=(const slice_t& rhs)
-{
-  for (int i = 0; i < count; i++)
-    data[i] = rhs.data[i];
-  return *this;
-}
-
-ostream& slice_t::output(ostream& out)
-{
-  out << "MAX PRODUCT: " << product() << ", slice:";
-  base_array_t::output(out) << endl;
-}
-
-struct array_t : public base_array_t
-{
-  void find_max(slice_t* current);
-  // these methods function like constructors, since they all initialize the
-  // data and count fields of array_t. However, since I can't find a way to
-  // distinguish the many such "constructors", methods are chosen instead.
-  void row(int grid[][MAX_COLUMN], int index);
-  void column(int grid[][MAX_COLUMN], int index);
-  void diagonal_down_first(int grid[][MAX_COLUMN], int i, int j);
-  void diagonal_down_last(int grid[][MAX_COLUMN], int i, int j);
-  void diagonal_up_first(int grid[][MAX_COLUMN], int i, int j);
-  void diagonal_up_last(int grid[][MAX_COLUMN], int i, int j);
-};
-
-// this method looks for a slice of 4 integers whose product is greater than max.
-// if found, it returns a pointer to the slice. if not found, it returns NULL
-void array_t::find_max(slice_t* current)
-{
-  // invoke base_array_t::operator<<()
-  cout << "data:" << *this << endl;
-
-  int start = 0;
-  // while end of row is not reached
-  while (start+MAX_SLICE-1 < count)
+  // this constructor creates an empty max Slice, with all integers set to zero.
+  Slice()
   {
-    // take a slice of 4 adjacent numbers
-    slice_t slice(data + start);
-    int index = slice.find(0);
-    // if the slice contains 0, then skip to the next slice beyond the 0,
-    // because a product of anything and 0 is 0.
-    if (index != NOT_FOUND)
-      start += index + 1;
-    else
+    for (int i = 0; i < Constants::MAX_SLICE; i++)
+      data.push_back(0);
+  }
+
+  // this constructor copies data from a list of integers
+  Slice(vector<int>::iterator begin, vector<int>::iterator end) : data(begin, end)
+  {
+  }
+
+  // this method returns the product of all integers in the Slice.
+  int product()
+  {
+    int result = 1;
+    for (int i = 0; i < data.size(); i++)
+      result *= data[i];
+    return result;
+  }
+
+  // this methods reports both the product of and the contents of all integers
+  // in the Slice
+  string report()
+  {
+    string builder;
+    builder.append("MAX PRODUCT: ").append(std::to_string(product())).append(", slice ").append(to_string(data));
+    return builder;
+  }
+};
+
+// base class used by 6 other classes (Row, Column, DownFirst, DownLast, UpFirst
+// and UpLast) with a common method find_max()
+class Array
+{
+public:
+  vector<int> data;
+
+  // this method finds, within the data array, the slice whose product has the
+  // maximum value and if so, replace the current max with the new max.
+  void find_max(Slice& current)
+  {
+    cout << "data " << to_string(data) << endl;
+
+    int start = 0;
+    // while end of row is not reached
+    while (start+Constants::MAX_SLICE <= data.size())
     {
-      // calculate the product of the 4 integers in the slice
-      int product = slice.product();
-      // update max if necessary
-      if (product > current->product())
+      // take a slice of 4 adjacent numbers
+      vector<int>::iterator begin = data.begin() + start;
+      vector<int>::iterator end = begin + Constants::MAX_SLICE;
+      Slice slice(begin, end);
+      // search the new slice for integer zero
+      vector<int>::iterator index = find(begin, end, 0);
+      // if the slice contains 0, then skip to the next slice beyond the 0,
+      // because a product of anything and 0 is 0.
+      if (index != end)
+        start += (index-begin) + 1;
+      else
       {
-        base_array_t base(slice.data, slice.count);
-        // invoke base_array_t::operator<<()
-        cout << "current: " << current->product() << ", new: " << product << ", slice:" << base << endl;
-        *current = slice;
+        // calculate the product of the 4 integers in the slice
+        int produit = slice.product();
+        // update max if necessary
+        if (produit > current.product())
+        {
+          cout << "current: " << current.product() << ", new: " << produit << ", slice " << to_string(slice.data) << endl;
+          current.data = slice.data;
+        }
+        // move on to the next slice
+        start += 1;
       }
-      // move on to the next slice
-      start += 1;
     }
   }
-}
+};
 
-// this method extracts one row at position i from the grid
-void array_t::row(int grid[][MAX_COLUMN], int index)
+// this class contains all 20 integers in a row
+class Row: public Array
 {
-  for (count = 0; count < MAX_COLUMN; count++)
-    data[count] = grid[index][count];
-}
-
-// this method extracts one column at position j from the grid
-void array_t::column(int grid[][MAX_COLUMN], int index)
-{
-  for (count = 0; count < MAX_ROW; count++)
-    data[count] = grid[count][index];
-}
-
-// This method extracts all numbers from grid starting at position (i,j) going
-// down diagonally. This method is called in a loop starting at i=16 and j=0,
-// and ending at i=0 and j=0.
-void array_t::diagonal_down_first(int grid[][MAX_COLUMN], int i, int j)
-{
-  count = 0;
-  while (i < MAX_ROW)
+public:
+  // this constructor extracts one row at position i from the grid
+  Row(vector<vector<int> >& grid, int row)
   {
-    data[count] = grid[i][j];
-    i += 1;
-    j += 1;
-    count += 1;
+    for (int i = 0; i < Constants::MAX_COLUMN; i++)
+      data.push_back(grid[row][i]);
   }
-}
+};
 
-// This method extracts all numbers from grid starting at position (i,j) going
-// down diagonally. This method is called in a loop starting at i=0 and j=1,
-// and ending at i=0 and j=16.
-void array_t::diagonal_down_last(int grid[][MAX_COLUMN], int i, int j)
+// this class contains all 20 integers in a column
+class Column: public Array
 {
-  count = 0;
-  while (j < MAX_COLUMN)
+public:
+  // this constructor extracts one column at position j from the grid
+  Column(vector<vector<int> >& grid, int column)
   {
-    data[count] = grid[i][j];
-    i += 1;
-    j += 1;
-    count += 1;
+    for (int i = 0; i < Constants::MAX_ROW; i++)
+      data.push_back(grid[i][column]);
   }
-}
+};
 
-// This method extracts all numbers from grid starting at position (i,j) going
-// up diagonally. This method is called in a loop starting at i=3 and j=0,
-// and ending at i=19 and j=0.
-void array_t::diagonal_up_first(int grid[][MAX_COLUMN], int i, int j)
+// empty class that serves as base for the following 4 diagonal classes
+class Diagonal: public Array
 {
-  count = 0;
-  while (i >= 0)
-  {
-    data[count] = grid[i][j];
-    i -= 1;
-    j += 1;
-    count += 1;
-  }
-}
+public:
+};
 
-// This method extracts all numbers from grid starting at position (i,j) going
-// up diagonally. This method is called in a loop starting at i=19 and j=1,
-// and ending at i=19 and j=16.
-void array_t::diagonal_up_last(int grid[][MAX_COLUMN], int i, int j)
+class DownFirst: public Diagonal
 {
-  count = 0;
-  while (j < MAX_COLUMN)
+public:
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going down diagonally. This method is called in a loop starting at i=16 and
+  // j=0, and ending at i=0 and j=0.
+  DownFirst(vector<vector<int> >& grid, int i, int j)
   {
-    data[count] = grid[i][j];
-    i -= 1;
-    j += 1;
-    count += 1;
+    while (i < Constants::MAX_ROW)
+    {
+      data.push_back(grid[i][j]);
+      i += 1;
+      j += 1;
+    }
   }
-}
+};
 
-// this method converts a string containing 20 integers separated by spaces into
-// an array of 20 integers
-void st_toarray(char* string, int array[])
+class DownLast: public Diagonal
 {
-  int j = 0;
-  for (char* token = strtok(string, " "); token; token = strtok(NULL, " "))
+public:
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going down diagonally. This method is called in a loop starting at i=0 and
+  // j=1, and ending at i=0 and j=16.
+  DownLast(vector<vector<int> >& grid, int i, int j)
   {
-    array[j] = atoi(token);
-    j++;
+    while (j < Constants::MAX_COLUMN)
+    {
+      data.push_back(grid[i][j]);
+      i += 1;
+      j += 1;
+    }
   }
+};
+
+class UpFirst: public Diagonal
+{
+public:
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going up diagonally. This method is called in a loop starting at i=3 and
+  // j=0, and ending at i=19 and j=0.
+  UpFirst(vector<vector<int> >& grid, int i, int j)
+  {
+    while (i >= 0)
+    {
+      data.push_back(grid[i][j]);
+      i -= 1;
+      j += 1;
+    }
+  }
+};
+
+class UpLast: public Diagonal
+{
+public:
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going up diagonally. This method is called in a loop starting at i=19 and
+  // j=1, and ending at i=19 and j=16.
+  UpLast(vector<vector<int> >& grid, int i, int j)
+  {
+    while (j < Constants::MAX_COLUMN)
+    {
+      data.push_back(grid[i][j]);
+      i -= 1;
+      j += 1;
+    }
+  }
+};
+
+// this method converts a string containing 20 integers separated by spaces
+// into a vector of 20 integers
+vector<int> to_ints(string line)
+{
+  vector<int> array;
+  tokenizer<char_separator<char> > tokens(line);
+  for (tokenizer<char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); it++)
+    array.push_back(stoi(*it));
+  return array;
 }
 
-void initialize(int grid[][MAX_COLUMN])
+// C++ doesn't allow returning arrays, so vector is chosen
+vector<vector<int> > init()
 {
   // set up input as an array of 20 strings, each containing 20 numbers
-  char input[][100] =
+  string lines[] =
   {
     "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08",
     "49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00",
@@ -251,65 +243,64 @@ void initialize(int grid[][MAX_COLUMN])
     "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"
   };
 
-  // convert the array of 20 strings into an array of 20 sub-arrays, each sub-array
-  // containing 20 numbers
-  for (int i = 0; i < MAX_ROW; i++)
-    st_toarray(input[i], grid[i]);
+  // convert the array of 20 strings into an array of 20 sub-arrays, each
+  // sub-array containing 20 numbers
+  vector<vector<int> > grid;
+  for (int i = 0; i < Constants::MAX_ROW; i++)
+    grid.push_back(to_ints(lines[i]));
+  return grid;
 }
 
 int main()
 {
-  int grid[MAX_ROW][MAX_COLUMN];
-  initialize(grid);
+  // set up grid as an array of 20 sub-arrays, each containing 20 integers
+  vector<vector<int> > grid = init();
+  // create an empty max Slice
+  Slice max;
 
-  slice_t max;
-
-  for (int i = 0; i < MAX_ROW; i++)
+  for (int i = 0; i < Constants::MAX_ROW; i++)
   {
-    array_t array;
-    array.row(grid, i);
-    array.find_max(&max);
+    // extract one row
+    Row row(grid, i);
+    // find max product within the row
+    row.find_max(max);
   }
-  // invoke slice_t::operator<<()
-  cout << max;
+  cout << max.report() << endl;
 
-  for (int j = 0; j < MAX_COLUMN; j++)
+  for (int j = 0; j < Constants::MAX_COLUMN; j++)
   {
-    array_t array;
-    array.column(grid, j);
-    array.find_max(&max);
+    // extract one column
+    Column column(grid, j);
+    // find max product within the column
+    column.find_max(max);
   }
-  cout << max;
+  cout << max.report() << endl;
 
-  for (int i = MAX_ROW-MAX_SLICE; i >= 0; i--)
+  for (int i = Constants::MAX_ROW-Constants::MAX_SLICE; i >= 0; i--)
   {
-    array_t array;
-    array.diagonal_down_first(grid, i, 0);
-    array.find_max(&max);
+    DownFirst down_first(grid, i, 0);
+    down_first.find_max(max);
   }
-  cout << max;
+  cout << max.report() << endl;
 
-  for (int j = 1; j <= MAX_COLUMN-MAX_SLICE; j++)
+  for (int j = 1; j <= Constants::MAX_COLUMN-Constants::MAX_SLICE; j++)
   {
-    array_t array;
-    array.diagonal_down_last(grid, 0, j);
-    array.find_max(&max);
+    DownLast down_last(grid, 0, j);
+    down_last.find_max(max);
   }
-  cout << max;
+  cout << max.report() << endl;
 
-  for (int i = MAX_SLICE-1; i <= MAX_ROW-1; i++)
+  for (int i = Constants::MAX_SLICE-1; i <= Constants::MAX_ROW-1; i++)
   {
-    array_t array;
-    array.diagonal_up_first(grid, i, 0);
-    array.find_max(&max);
+    UpFirst up_first(grid, i, 0);
+    up_first.find_max(max);
   }
-  cout << max;
+  cout << max.report() << endl;
 
-  for (int j = 1; j <= MAX_COLUMN-MAX_SLICE; j++)
+  for (int j = 1; j <= Constants::MAX_COLUMN-Constants::MAX_SLICE; j++)
   {
-    array_t array;
-    array.diagonal_up_last(grid, MAX_ROW-1, j);
-    array.find_max(&max);
+    UpLast up_last(grid, Constants::MAX_ROW-1, j);
+    up_last.find_max(max);
   }
-  cout << max;
+  cout << max.report() << endl;
 }

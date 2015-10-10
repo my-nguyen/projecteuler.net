@@ -1,94 +1,71 @@
 import java.util.*;
 
-class base_array_t
+class Constants
 {
   final static int MAX_SLICE = 4;
   final static int MAX_ROW = 20;
   final static int MAX_COLUMN = 20;
-  final static int NOT_FOUND = -1;
+}
 
-  public base_array_t() {}
-
-  public base_array_t(int array[], int offset, int size)
-  {
-    count = size;
-    for (int i = 0; i < count; i++)
-      data[i] = array[offset+i];
-  }
-
-  public String toString()
-  {
-    StringBuilder out = new StringBuilder();
-    for (int i = 0; i < count; i++)
-      out.append(" ").append(data[i]);
-    return out.toString();
-  }
-
-  protected int[] data = new int[MAX_ROW];
-  protected int count = 0;
-};
-
-class slice_t extends base_array_t
+class Slice
 {
-  public slice_t()
+  List<Integer> data = new ArrayList<>();
+
+  // this constructor creates an empty max Slice, with all integers set to zero.
+  Slice()
   {
-    count = MAX_SLICE;
-    for (int i = 0; i < count; i++)
-      data[i] = 0;
+    for (int i = 0; i < Constants.MAX_SLICE; i++)
+      data.add(0);
   }
 
-  public slice_t(int array[], int offset)
+  // this constructor copies data from a list of integers
+  Slice(List<Integer> rhs)
   {
-    super(array, offset, MAX_SLICE);
+    data = rhs;
   }
 
-  public int find(int target)
-  {
-    for (int i = 0; i < count; i++)
-      if (data[i] == target)
-        return i;
-    return NOT_FOUND;
-  }
-
-  public int product()
+  // this method returns the product of all integers in the Slice.
+  int product()
   {
     int result = 1;
-    for (int i = 0; i < count; i++)
-      result *= data[i];
+    for (int number : data)
+      result *= number;
     return result;
   }
 
-  public void assign(slice_t other)
-  {
-    for (int i = 0; i < count; i++)
-      data[i] = other.data[i];
-  }
-
-  public String toString()
+  // this methods reports both the product of and the contents of all integers
+  // in the Slice
+  String report()
   {
     StringBuilder out = new StringBuilder();
-    out.append("MAX PRODUCT: ").append(product()).append(", slice:").append(super.toString());
+    out.append("MAX PRODUCT: ").append(product()).append(", slice ").append(data);
     return out.toString();
   }
 }
 
-class array_t extends base_array_t
+// base class used by 6 other classes (Row, Column, DownFirst, DownLast, UpFirst
+// and UpLast) with a common method find_max()
+class Array
 {
-  void find_max(slice_t current)
+  List<Integer> data = new ArrayList<>();
+
+  // this method finds, within the data array, the slice whose product has the
+  // maximum value and if so, replace the current max with the new max.
+  void find_max(Slice current)
   {
-    // invoke base_array_t::toString()
-    System.out.println("data:" + this);
+    System.out.println("data " + data);
 
     int start = 0;
     // while end of row is not reached
-    while (start+MAX_SLICE-1 < count)
+    while (start+Constants.MAX_SLICE <= data.size())
     {
       // take a slice of 4 adjacent numbers
-      slice_t slice = new slice_t(data, start);
-      int index = slice.find(0);
+      Slice slice = new Slice(data.subList(start, start+Constants.MAX_SLICE));
+      // search the new slice for integer zero
+      int index = slice.data.indexOf(0);
       // if the slice contains 0, then skip to the next slice beyond the 0,
       // because a product of anything and 0 is 0.
-      if (index != NOT_FOUND)
+      if (index != -1)
         start += index + 1;
       else
       {
@@ -97,118 +74,126 @@ class array_t extends base_array_t
         // update max if necessary
         if (product > current.product())
         {
-          // invoke base_array_t::toString()
-          System.out.println("current: " + current.product() + ", new: "
-            + product + ", slice:" + new base_array_t(slice.data, 0, slice.count));
-          current.assign(slice);
+          System.out.println("current: " + current.product() + ", new: " + product + ", slice " + slice.data);
+          current.data = slice.data;
         }
         // move on to the next slice
         start += 1;
       }
     }
   }
+}
 
-  // the following methods function like constructors, since they all initialize
-  // the fields data and count. However, since I can't find a way to
-  // distinguish the many such "constructors", methods are chosen instead.
-  //
-  // this method extracts one row at position i from the grid
-  void row(int[][] grid, int index)
+// this class contains all 20 integers in a row
+class Row extends Array
+{
+  // this constructor extracts one row at position i from the grid
+  Row(List<List<Integer>> grid, int row)
   {
-    for (count = 0; count < MAX_COLUMN; count++)
-      data[count] = grid[index][count];
+    for (int i = 0; i < Constants.MAX_COLUMN; i++)
+      data.add(grid.get(row).get(i));
   }
+}
 
-  // this method extracts one column at position j from the grid
-  void column(int[][] grid, int index)
+// this class contains all 20 integers in a column
+class Column extends Array
+{
+  // this constructor extracts one column at position j from the grid
+  Column(List<List<Integer>> grid, int column)
   {
-    for (count = 0; count < MAX_ROW; count++)
-      data[count] = grid[count][index];
+    for (int i = 0; i < Constants.MAX_ROW; i++)
+      data.add(grid.get(i).get(column));
   }
+}
 
-  // This method extracts all numbers from grid starting at position (i,j) going
-  // down diagonally. This method is called in a loop starting at i=16 and j=0,
-  // and ending at i=0 and j=0.
-  void diagonal_down_first(int[][] grid, int i, int j)
+// empty class that serves as base for the following 4 diagonal classes
+class Diagonal extends Array
+{
+}
+
+class DownFirst extends Diagonal
+{
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going down diagonally. This method is called in a loop starting at i=16 and
+  // j=0, and ending at i=0 and j=0.
+  DownFirst(List<List<Integer>> grid, int i, int j)
   {
-    count = 0;
-    while (i < MAX_ROW)
+    while (i < Constants.MAX_ROW)
     {
-      data[count] = grid[i][j];
+      data.add(grid.get(i).get(j));
       i += 1;
       j += 1;
-      count += 1;
     }
   }
+}
 
-  // This method extracts all numbers from grid starting at position (i,j) going
-  // down diagonally. This method is called in a loop starting at i=0 and j=1,
-  // and ending at i=0 and j=16.
-  void diagonal_down_last(int[][] grid, int i, int j)
+class DownLast extends Diagonal
+{
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going down diagonally. This method is called in a loop starting at i=0 and
+  // j=1, and ending at i=0 and j=16.
+  DownLast(List<List<Integer>> grid, int i, int j)
   {
-    count = 0;
-    while (j < MAX_COLUMN)
+    while (j < Constants.MAX_COLUMN)
     {
-      data[count] = grid[i][j];
+      data.add(grid.get(i).get(j));
       i += 1;
       j += 1;
-      count += 1;
     }
   }
+}
 
-  // This method extracts all numbers from grid starting at position (i,j) going
-  // up diagonally. This method is called in a loop starting at i=3 and j=0,
-  // and ending at i=19 and j=0.
-  void diagonal_up_first(int[][] grid, int i, int j)
+class UpFirst extends Diagonal
+{
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going up diagonally. This method is called in a loop starting at i=3 and
+  // j=0, and ending at i=19 and j=0.
+  UpFirst(List<List<Integer>> grid, int i, int j)
   {
-    count = 0;
     while (i >= 0)
     {
-      data[count] = grid[i][j];
+      data.add(grid.get(i).get(j));
       i -= 1;
       j += 1;
-      count += 1;
     }
   }
+}
 
-  // This method extracts all numbers from grid starting at position (i,j) going
-  // up diagonally. This method is called in a loop starting at i=19 and j=1,
-  // and ending at i=19 and j=16.
-  void diagonal_up_last(int[][] grid, int i, int j)
+class UpLast extends Diagonal
+{
+  // This constructor extracts all numbers from grid starting at position (i,j)
+  // going up diagonally. This method is called in a loop starting at i=19 and
+  // j=1, and ending at i=19 and j=16.
+  UpLast(List<List<Integer>> grid, int i, int j)
   {
-    count = 0;
-    while (j < MAX_COLUMN)
+    while (j < Constants.MAX_COLUMN)
     {
-      data[count] = grid[i][j];
+      data.add(grid.get(i).get(j));
       i -= 1;
       j += 1;
-      count += 1;
     }
   }
 }
 
 class euler_011
 {
-  final static int MAX_SLICE = 4;
-  final static int MAX_ROW = 20;
-  final static int MAX_COLUMN = 20;
-
-  // this method converts a string containing 20 integers separated by spaces into
-  // an array of 20 integers
-  private static void st_toarray(String string, int[] array)
+  // this method converts a string containing 20 integers separated by spaces
+  // into an array of 20 integers
+  static List<Integer> to_ints(String string)
   {
-    // replaced StringTokenizer with String::split() because according to the
-    // web, StringTokenizer is legacy code
+    List<Integer> array = new ArrayList<>();
+    // replaced StringTokenizer with String::split() because StringTokenizer is
+    // legacy class
     String[] tokens = string.split(" ");
     for (int i = 0; i < tokens.length; i++)
-      array[i] = Integer.parseInt(tokens[i]);
+      array.add(Integer.parseInt(tokens[i]));
+    return array;
   }
 
-  private static void initialize(int[][] grid)
+  static List<List<Integer>> init()
   {
     // set up input as an array of 20 strings, each containing 20 numbers
-    // String[] input = String[MAX_ROW];
-    String[] input =
+    String[] lines =
     {
       "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08",
       "49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00",
@@ -232,66 +217,65 @@ class euler_011
       "01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"
     };
 
-    // convert the array of 20 strings into an array of 20 sub-arrays, each sub-array
-    // containing 20 numbers
-    for (int i = 0; i < MAX_ROW; i++)
-      st_toarray(input[i], grid[i]);
+    // convert the array of 20 strings into an array of 20 sub-arrays, each
+    // sub-array containing 20 numbers
+    List<List<Integer>> grid = new ArrayList<List<Integer>>();
+    for (int i = 0; i < Constants.MAX_ROW; i++)
+      grid.add(to_ints(lines[i]));
+    return grid;
   }
 
   public static void main(String[] args)
   {
-    int[][] grid = new int[MAX_ROW][MAX_COLUMN];
-    initialize(grid);
+    // set up grid as an array of 20 sub-arrays, each containing 20 integers
+    List<List<Integer>> grid = init();
+    // create an empty max Slice
+    Slice max = new Slice();
 
-    slice_t max = new slice_t();
-
-    for (int i = 0; i < MAX_ROW; i++)
+    for (int i = 0; i < Constants.MAX_ROW; i++)
     {
-      array_t array = new array_t();
-      array.row(grid, i);
-      array.find_max(max);
+      // extract one row
+      Row row = new Row(grid, i);
+      // find max product within the row
+      row.find_max(max);
     }
-    // invoke slice_t::toString()
-    System.out.println(max);
+    System.out.println(max.report());
 
-    for (int j = 0; j < MAX_COLUMN; j++)
+    for (int j = 0; j < Constants.MAX_COLUMN; j++)
     {
-      array_t array = new array_t();
-      array.column(grid, j);
-      array.find_max(max);
+      // extract one column
+      Column column = new Column(grid, j);
+      // find max product within the column
+      column.find_max(max);
     }
-    System.out.println(max);
+    System.out.println(max.report());
 
-    for (int i = MAX_ROW-MAX_SLICE; i >= 0; i--)
+    for (int i = Constants.MAX_ROW-Constants.MAX_SLICE; i >= 0; i--)
     {
-      array_t array = new array_t();
-      array.diagonal_down_first(grid, i, 0);
-      array.find_max(max);
+      DownFirst down_first = new DownFirst(grid, i, 0);
+      down_first.find_max(max);
     }
-    System.out.println(max);
+    System.out.println(max.report());
 
-    for (int j = 1; j <= MAX_COLUMN-MAX_SLICE; j++)
+    for (int j = 1; j <= Constants.MAX_COLUMN-Constants.MAX_SLICE; j++)
     {
-      array_t array = new array_t();
-      array.diagonal_down_last(grid, 0, j);
-      array.find_max(max);
+      DownLast down_last = new DownLast(grid, 0, j);
+      down_last.find_max(max);
     }
-    System.out.println(max);
+    System.out.println(max.report());
 
-    for (int i = MAX_SLICE-1; i <= MAX_ROW-1; i++)
+    for (int i = Constants.MAX_SLICE-1; i <= Constants.MAX_ROW-1; i++)
     {
-      array_t array = new array_t();
-      array.diagonal_up_first(grid, i, 0);
-      array.find_max(max);
+      UpFirst up_first = new UpFirst(grid, i, 0);
+      up_first.find_max(max);
     }
-    System.out.println(max);
+    System.out.println(max.report());
 
-    for (int j = 1; j <= MAX_COLUMN-MAX_SLICE; j++)
+    for (int j = 1; j <= Constants.MAX_COLUMN-Constants.MAX_SLICE; j++)
     {
-      array_t array = new array_t();
-      array.diagonal_up_last(grid, MAX_ROW-1, j);
-      array.find_max(max);
+      UpLast up_last = new UpLast(grid, Constants.MAX_ROW-1, j);
+      up_last.find_max(max);
     }
-    System.out.println(max);
+    System.out.println(max.report());
   }
 }
