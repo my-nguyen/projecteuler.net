@@ -18,7 +18,28 @@ def largest_prime(target)
   prime
 end
 
+def alternative(target)
+  number = target
+  largest = 0
+  count = 2
+  while (count*count <= number)
+    if (number % count == 0)
+      number /= count
+      largest = count
+    else
+      count += 1
+    end
+  end
+  if (number > largest)
+    largest = number
+  end
+  largest
+end
+
 targets = [13915, 475143, 1475143, 51475143, 1851475143, 10851475143, 600851475143]
 targets.each do |target|
   puts("target: #{target}, largest prime: #{largest_prime(target)}")
+end
+targets.each do |target|
+  puts("target: #{target}, alternative: #{alternative(target)}")
 end
