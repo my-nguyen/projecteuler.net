@@ -40,7 +40,7 @@ void caching()
   // and will eventually store all 1000000 sequence lengths.
   int cache[MAX_NUMBER+1];
   for (int i = 0; i <= MAX_NUMBER; i++)
-    cache[i] = -1;
+    cache[i] = 0;
   cache[1] = 1;
 
   for (int index = 2; index <= MAX_NUMBER; index++)

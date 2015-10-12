@@ -30,7 +30,7 @@ def caching()
   # and will eventually store all 1000000 sequence lengths.
   cache = []
   (MAX_NUMBER+1).times do |i|
-    cache << -1
+    cache << 0
   end
   cache[1] = 1
 
