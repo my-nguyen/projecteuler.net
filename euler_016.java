@@ -11,9 +11,8 @@ public class euler_016
       BigInteger power = base.pow(exponent);
       String string = power.toString();
       int sum = 0;
-      int zero = Character.getNumericValue('0');
       for (char digit : string.toCharArray())
-        sum += Character.getNumericValue(digit) - zero;
+        sum += digit - '0';
       System.out.println("2^" + exponent + ": " + power + ", sum: " + sum);
     }
   }
