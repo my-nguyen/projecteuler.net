@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <gmp.h>
 
+// this method calculates the factorial of a number. the calculated result is
+// not returned because mpz_t is an array. instead it's passed back by reference
 void factorial(int number, mpz_t product)
 {
   mpz_init(product);
@@ -18,13 +20,13 @@ void main()
   int i;
   for (i = 0; i < sizeof(targets)/sizeof(int); i++)
   {
-    // take the factorial of target number, the factorial being a BigInteger,
-    // convert the BigInteger into a String, then convert the String into an
-    // array of digit-characters, before summing up all the digits in the array
     mpz_t factor;
+    // take the factorial of target number, the factorial being a GNU MP
     factorial(targets[i], factor);
+    // convert the factorial into a String
     char* string = mpz_get_str(NULL, 10, factor);
     int sum = 0;
+    // sum up all the digits in the array
     int j;
     for (j = 0; j < strlen(string); j++)
       sum += string[j] - '0';

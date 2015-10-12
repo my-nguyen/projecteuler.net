@@ -13,17 +13,16 @@ public class euler_020
   public static void main(String[] args)
   {
     int[] targets = { 10, 100 };
-    for (int i = 0; i < targets.length; i++)
+    for (int target : targets)
     {
       int sum = 0;
-      int zero = Character.getNumericValue('0');
       // take the factorial of target number, the factorial being a BigInteger,
       // convert the BigInteger into a String, then convert the String into an
       // array of digit-characters, before summing up all the digits in the array
-      BigInteger factorial = factorial(targets[i]);
+      BigInteger factorial = factorial(target);
       for (char digit : factorial.toString().toCharArray())
-        sum += Character.getNumericValue(digit) - zero;
-      System.out.println("factorial(" + targets[i] + "): " + factorial + ", sum: " + sum);
+        sum += digit - '0';
+      System.out.println("factorial(" + target + "): " + factorial + ", sum: " + sum);
     }
   }
 }
