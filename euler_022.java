@@ -7,7 +7,8 @@ public class euler_022
   // over 5,000 names, parse the names, store them in a list, then return the list
   static List<String> input() throws FileNotFoundException
   {
-    // read from file. Luckily Scanner() can read a larger text file (46447 characters)!!
+    // read from file. Luckily Scanner() can read a larger text file of 46447
+    // characters!!
     Scanner scanner = new Scanner(new File("euler_022-names.txt"));
     // there's only one huge line (46447 characters) to read
     String line = scanner.nextLine();
@@ -40,11 +41,10 @@ public class euler_022
     for (int i = 0; i < names.size(); i++)
     {
       int sum = 0;
-      int letterA = Character.getNumericValue('A') - 1;
       for (char letter : names.get(i).toCharArray())
       {
         // sum of the alphabetical value of all letters of a name
-        int value = Character.getNumericValue(letter) - letterA;
+        int value = letter - 'A' + 1;
         sum += value;
         // System.out.println("char: " + letter + ", value: " + value);
       }
