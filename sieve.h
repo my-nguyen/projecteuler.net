@@ -15,6 +15,8 @@ public:
 
   unsigned long sum();
 
+  bool is_prime(int number) { return field.test(number); }
+
 private:
   dynamic_bitset<> field;
 };

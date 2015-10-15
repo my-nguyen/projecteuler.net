@@ -71,4 +71,9 @@ class Sieve
 
     return sum;
   }
+
+  boolean is_prime(int number)
+  {
+    return field.get(number);
+  }
 }

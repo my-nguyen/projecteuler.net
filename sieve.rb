@@ -59,4 +59,8 @@ class Sieve
     end
     sum
   end
+
+  def is_prime(number)
+    @field[number]
+  end
 end
