@@ -46,7 +46,7 @@ class euler_001
   public static void main(String[] args)
   {
     int limit = 999;
-    System.out.println("Mine: " + mine_sum(limit));
+    System.out.println("Brute force: " + mine_sum(limit));
     System.out.println("Geometric: " + geo_sum(limit));
   }
 }
