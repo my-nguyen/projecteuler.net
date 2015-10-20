@@ -21,7 +21,7 @@ class Sieve
       # test whether bit at i is ON
       if @field[index]
         multiple = 2
-        while (index*multiple <= size)
+        while (index*multiple < size)
           # all multiples of a prime numbers (2p, 3p, 4p, etc) are not primes.
           # So turn off bit at (i*multiple)th position.
           @field[index*multiple] = false
@@ -29,7 +29,6 @@ class Sieve
         end
       end
     end
-    @field
   end
 
   # this method returns the natural number of the prime number at position. for
@@ -42,7 +41,9 @@ class Sieve
     j = 0
     while (j < position)
       i += 1
-      j += 1 if @field[i]
+      if @field[i]
+        j += 1
+      end
     end
     i
   end

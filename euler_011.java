@@ -220,8 +220,8 @@ class euler_011
     // convert the array of 20 strings into an array of 20 sub-arrays, each
     // sub-array containing 20 numbers
     List<List<Integer>> grid = new ArrayList<List<Integer>>();
-    for (int i = 0; i < Constants.MAX_ROW; i++)
-      grid.add(to_ints(lines[i]));
+    for (String line : lines)
+      grid.add(to_ints(line));
     return grid;
   }
 

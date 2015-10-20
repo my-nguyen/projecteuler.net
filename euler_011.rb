@@ -154,13 +154,8 @@ end
 
 # this method converts a string containing 20 integers separated by spaces
 # into an array of 20 integers
-def to_int_array(string, array)
-  # replaced StringTokenizer with String::split() because StringTokenizer is
-  # legacy class
-  tokens = string.split
-  tokens.each do |token|
-    array << token.to_i
-  end
+def to_ints(line)
+  line.split.map(&:to_i)
 end
 
 def init()
@@ -191,7 +186,7 @@ def init()
   # sub-array containing 20 numbers
   grid = Array.new
   lines.each do |line|
-    grid << line.split.map(&:to_i)
+    grid << to_ints(line)
   end
   grid
 end

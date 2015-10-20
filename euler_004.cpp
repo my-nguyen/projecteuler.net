@@ -35,7 +35,7 @@ int repeat(int times)
 // 2-digit and 3-digit numbers
 vector<int> mine_palindrome(int target)
 {
-  vector<int> result;
+  vector<int> result(2);
   int max = 1;
   // use 2 indices: upper starts from target down to 1, and lower starts from
   // upper down to 1
@@ -48,9 +48,8 @@ vector<int> mine_palindrome(int target)
       if (is_palindrome(product) && product > max)
       {
         max = product;
-        result.clear();
-        result.push_back(lower);
-        result.push_back(upper);
+        result[0] = lower;
+        result[1] = upper;
       }
     }
   }

@@ -21,7 +21,7 @@ end
 # this method finds the largest palindrome found in all products of 1-digit,
 # 2-digit and 3-digit numbers
 def mine_palindrome(target)
-  result = []
+  result = Array.new(2)
   max = 1
   # use 2 indices: upper starts from target down to 1, and lower starts from
   # upper down to 1
@@ -49,7 +49,7 @@ end
 
 # this method is based on http://www.optimized.dk/project-euler-problem-4/
 def optimized(target)
-  result = []
+  result = Array.new(2)
   found = false
   index = target-1
   while (!found)
