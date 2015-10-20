@@ -123,13 +123,7 @@ public class euler_013
     for (BigInteger number : numbers)
       sum = sum.add(number);
 
-    // to take first 10 digits of the sum, must first convert the BigInteger sum
-    // to a string
-    String string = sum.toString();
-
-    // the problem requires first ten digits of the sum, meaning digits of index
-    // from 0 to 10 (high 10 in the following printout)
-    System.out.println("high 10: " + string.substring(0, 10) + ", low 10: "
-      + string.substring(string.length()-10, string.length()));
+    // first convert the sum to a string then take the first ten digits of the string
+    System.out.println("high 10: " + sum.toString().substring(0, 10));
   }
 }

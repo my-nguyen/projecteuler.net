@@ -18,14 +18,14 @@ fifth_powers = []
 (10..354294).each do |left|
   # sum of the fifth powers of all digits
   sum = 0
-  left.to_s.each_char do |digit|
-    sum += digit.to_i ** 5
+  left.to_s.chars.map(&:to_i).each do |digit|
+    sum += digit ** 5
   end
 
   if (left == sum)
     print("left=#{left}")
-    left.to_s.each_char do |digit|
-      print(" #{digit}^5=#{digit.to_i**5}")
+    left.to_s.chars.map(&:to_i).each do |digit|
+      print(" #{digit}^5=#{digit**5}")
     end
     puts
     fifth_powers << sum

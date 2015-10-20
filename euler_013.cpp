@@ -124,11 +124,6 @@ int main()
   for (int i = 0; i < MAX_BIGINTEGERS; i++)
     sum = sum + numbers[i];
 
-  // to take first 10 digits of the sum, must first convert the BigInteger sum
-  // to a string
-  string ssum = sum;
-
-  // the problem requires first ten digits of the sum, meaning digits of index
-  // from 0 to 10 (high 10 in the following printout)
-  cout << "high 10: " << ssum.substr(0, 10) << endl;
+  // first convert the sum to a string then take the first ten digits of the string
+  cout << "high 10: " << string(sum).substr(0, 10) << endl;
 }

@@ -29,7 +29,7 @@ def rank(used, target)
   count = 0
   i = 0
   while (i < used.size && count <= target)
-    if (used[i] == false)
+    if (!used[i])
       count += 1
     end
     i += 1
@@ -42,7 +42,7 @@ end
 def unused(used)
   result = ""
   used.each_index do |i|
-    if (used[i] == false)
+    if (!used[i])
       result += (i + '0'.ord).chr
     end
   end

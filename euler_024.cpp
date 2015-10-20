@@ -35,7 +35,7 @@ int rank(vector<bool>& used, int target)
   int i = 0;
   while (i < used.size() && count <= target)
   {
-    if (used[i] == false)
+    if (!used[i])
       count += 1;
     i += 1;
   }
@@ -48,7 +48,7 @@ string unused(vector<bool>& used)
 {
   string result;
   for (int i = 0; i < used.size(); i++)
-    if (used[i] == false)
+    if (!used[i])
       result += (char)(i + '0');
   return result;
 }

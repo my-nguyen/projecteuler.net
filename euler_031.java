@@ -24,12 +24,11 @@ public class euler_031
         int[] sub_denominations = Arrays.copyOfRange(denominations, 1, denominations.length);
         // recursive call with a new total and a sub array formed by removing
         // the head element from the list of denominations.
-        List<List<Integer>> tmp = count(new_total, sub_denominations);
-        // generate a new List<List<Integer>> by prepending the head
-        // denomination to the List<List<Integer>> returned from the recursive
-        // call
-        for (List<Integer> sublist : tmp)
+        for (List<Integer> sublist : count(new_total, sub_denominations))
         {
+          // generate a new List<List<Integer>> by prepending the head
+          // denomination to the List<List<Integer>> returned from the recursive
+          // call
           List<Integer> entry = new ArrayList<>();
           entry.add(i);
           entry.addAll(sublist);

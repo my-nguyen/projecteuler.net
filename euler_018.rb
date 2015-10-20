@@ -4,10 +4,7 @@
 # this method converts a string containing integers separated by spaces into
 # an array of integers
 def to_ints(line)
-  line.split.each do |token|
-    array << token.to_i
-  end
-  array
+  line.split.map(&:to_i)
 end
 
 def input()
@@ -30,7 +27,7 @@ def input()
 
   triangle = []
   lines.each do |line|
-    triangle << line.split.map(&:to_i)
+    triangle << to_ints(line)
   end
   triangle
 end

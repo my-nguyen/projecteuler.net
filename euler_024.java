@@ -35,7 +35,7 @@ public class euler_024
     int i = 0;
     while (i < used.length && count <= target)
     {
-      if (used[i] == false)
+      if (!used[i])
         count += 1;
       i += 1;
     }
@@ -48,7 +48,7 @@ public class euler_024
   {
     StringBuilder result = new StringBuilder();
     for (int i = 0; i < used.length; i++)
-      if (used[i] == false)
+      if (!used[i])
         result.append((char)(i + '0'));
     return result.toString();
   }

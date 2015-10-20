@@ -36,9 +36,9 @@ def scores(names)
       # sum of the alphabetical value of all letters of a name
       value = letter.ord - 'A'.ord + 1
       sum += value
-      # cout << "char: " << *jt << ", value: " << value << endl;
+      # puts("char: #{letter}, value: #{value}")
     end
-    # cout << "total: " << sum << ", index: " << i << endl;
+    # puts("total: #{sum}, index: #{i}")
     # multiply the sum with the alphabetical position of the name
     sum *= i + 1
 
@@ -55,7 +55,6 @@ def sum(list)
 end
 
 names = input
-# vector<string>::iterator it = find(names.begin(), names.end(), "COLIN");
-# cout << "index of COLIN: " << distance(names.begin(), it) << endl;
+# puts("index of COLIN: #{names.index("COLIN")}")
 points = scores(names)
 puts("Total: #{sum(points)}")

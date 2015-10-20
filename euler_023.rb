@@ -25,7 +25,7 @@ def sum(list)
   list.inject(:+)
 end
 
-LIMIT = 28123;
+LIMIT = 28123
 
 # calculate all abundant numbers from 1 to the LIMIT
 abundants = []

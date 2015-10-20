@@ -15,11 +15,10 @@ def count(total, denominations)
       sub_denominations = denominations[1..-1]
       # recursive call with a new total and a sub array formed by removing
       # the head element from the list of denominations.
-      tmp = count(new_total, sub_denominations)
-      # generate a new array of array of integer by prepending the head
-      # denomination to the array of array of integer returned from the recursive
-      # call
-      tmp.each do |sublist|
+      count(new_total, sub_denominations).each do |sublist|
+        # generate a new array of array of integer by prepending the head
+        # denomination to the array of array of integer returned from the recursive
+        # call
         entry = []
         entry << i
         entry += sublist

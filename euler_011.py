@@ -120,10 +120,7 @@ class UpLast(Diagonal):
 # this method converts a string containing 20 integers separated by spaces
 # into an array of 20 integers
 def to_ints(line):
-  array = []
-  for token in line.split():
-    array.append(int(token))
-  return array
+  return map(int, line.split())
 
 def init():
   # set up lines as an array of 20 strings, each containing 20 numbers

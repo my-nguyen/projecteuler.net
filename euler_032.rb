@@ -17,8 +17,8 @@ class Flags
 
   # this method marks the digits in number as ON
   def mask(number)
-    number.to_s.each_char do |digit|
-      @data[digit.ord-'0'.ord] = true
+    number.to_s.chars.map(&:to_i).each do |digit|
+      @data[digit] = true
     end
     self
   end

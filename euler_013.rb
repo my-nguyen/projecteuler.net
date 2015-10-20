@@ -106,8 +106,5 @@ numbers << 53503534226472524250874054075591789781264330331690
 # take the sum of all these 100 50-digit numbers
 sum = numbers.inject(:+)
 
-# first convert the sum to a string
-ssum = sum.to_s
-
-# then take the first ten digits of the sum
-puts("high 10: #{ssum[0, 10]}")
+# first convert the sum to a string then take the first ten digits of the string
+puts("high 10: #{sum.to_s[0, 10]}")

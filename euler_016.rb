@@ -7,7 +7,7 @@ exponents.each do |exponent|
 
   # convert the huge integer into string, break that string into an array of
   # characters, then turn that array into an array of digits
-  numbers = power.to_s.chars.map(&:to_i);
+  numbers = power.to_s.chars.map(&:to_i)
 
   # take the sum of all the digits in the array of digits
   sum = numbers.inject(:+)

@@ -50,14 +50,14 @@ date = 1
     # the end of month 12 (December) falls on the next year, so adjust the
     # year accordingly
     annee = year + (month == 12 ? 1 : 0)
-    # cout << "offset: " << offset << ", 1st of " << months[month] << " of " << annee << ": " << (date+offset)) << endl;
+    # puts("offset: #{offset}, 1st of #{months[month]} of #{annee}: #{(date+offset)}")
     # since day 1 (1/1/1900) is a Monday, day 7, day 14, day 21, day 28
     # (which all happen to be divisible by 7), are all Sundays. So any
     # integer that falls on the first of a month and is also divisible by 7
     # is a Sunday.
     # also we must discount year 1900 as per problem spec
     if ((date+offset) % 7 == 0 && annee != 1900)
-      count += 1;
+      count += 1
       puts("#{months[month]} of #{annee}")
     end
   end
