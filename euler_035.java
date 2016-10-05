@@ -34,12 +34,13 @@ class Digits {
    }
 }
 
-public class euler_035
-{
-   static boolean[] getPrimes(int target)
+class Primes {
+   boolean[] primes;
+
+   Primes(int target)
    {
       // by default all elements in a boolean[] are initialized to false
-      boolean[] primes = new boolean[target];
+      primes = new boolean[target];
       // re-set all elements in the boolean[] to true
       Arrays.fill(primes, true);
       for (int i = 2; i < target; i++)
@@ -54,10 +55,13 @@ public class euler_035
             }
          }
       }
-      return primes;
    }
 
-   static String toString(boolean[] primes) {
+   boolean isPrime(int number) {
+      return primes[number];
+   }
+
+   public String toString() {
       final int PER_ROW = 10;
       int print = 0;
       StringBuilder builder = new StringBuilder();
@@ -71,15 +75,18 @@ public class euler_035
       }
       return builder.toString();
    }
+}
 
-      static int mySolution() {
+public class euler_035
+{
+   static int mySolution() {
       final int MAX = 1000000;
       // calculate all the primes number up the MAX
-      boolean[] primes = getPrimes(MAX);
+      Primes primes = new Primes(MAX);
       List<Integer> circulars = new ArrayList<>();
-      for (int i = 2; i < primes.length; i++) {
+      for (int i = 2; i < MAX; i++) {
          // if number at i is prime
-         if (primes[i]) {
+         if (primes.isPrime(i)) {
             // break up the number into digits
             Digits digits = new Digits(i);
             boolean isCirCular = true;
@@ -92,7 +99,7 @@ public class euler_035
                int number = digits.toInt();
                // if the rotated number is not a prime, then the original number
                // is not circular
-               if (!primes[number]) {
+               if (!primes.isPrime(number)) {
                   isCirCular = false;
                   break;
                }
