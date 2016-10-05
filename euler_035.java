@@ -1,5 +1,39 @@
 import java.util.*;
 
+class Digits {
+   Deque<Integer> digits;
+
+   Digits(int number) {
+      digits = new LinkedList<>();
+      while (number > 0) {
+         // extract the least-significant digit
+         int digit = number % 10;
+         // add the digit to the beginning of the Deque
+         digits.push(digit);
+         number /= 10;
+      }
+   }
+
+   int size() {
+      return digits.size();
+   }
+
+   void rotate() {
+      int head = (int)digits.pop();
+      digits.add(head);
+   }
+
+   int toInt() {
+      Iterator it = digits.iterator();
+      int number = (int)it.next();
+      while (it.hasNext()) {
+         int digit = (int)it.next();
+         number = number*10 + digit;
+      }
+      return number;
+   }
+}
+
 public class euler_035
 {
    static boolean[] getPrimes(int target)
@@ -38,34 +72,7 @@ public class euler_035
       return builder.toString();
    }
 
-   static Deque<Integer> extractDigits(int number) {
-      Deque<Integer> digits = new LinkedList<>();
-      while (number > 0) {
-         // extract the least-significant digit
-         int digit = number % 10;
-         // add the digit to the beginning of the Deque
-         digits.push(digit);
-         number /= 10;
-      }
-      return digits;
-   }
-
-   static void rotateDigits(Deque<Integer> digits) {
-      int head = (int)digits.pop();
-      digits.add(head);
-   }
-
-   static int getNumber(Deque<Integer> digits) {
-      Iterator it = digits.iterator();
-      int number = (int)it.next();
-      while (it.hasNext()) {
-         int digit = (int)it.next();
-         number = number*10 + digit;
-      }
-      return number;
-   }
-
-   static int mySolution() {
+      static int mySolution() {
       final int MAX = 1000000;
       // calculate all the primes number up the MAX
       boolean[] primes = getPrimes(MAX);
@@ -74,15 +81,15 @@ public class euler_035
          // if number at i is prime
          if (primes[i]) {
             // break up the number into digits
-            Deque<Integer> digits = extractDigits(i);
+            Digits digits = new Digits(i);
             boolean isCirCular = true;
             // how many times to rotate
             int rotateCount = digits.size();
             for (int j = 0; j < rotateCount; j++) {
                // rotate the digits
-               rotateDigits(digits);
+               digits.rotate();
                // compose a number out of the rotated digits
-               int number = getNumber(digits);
+               int number = digits.toInt();
                // if the rotated number is not a prime, then the original number
                // is not circular
                if (!primes[number]) {
