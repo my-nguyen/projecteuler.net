@@ -91,15 +91,28 @@ class Primes {
    }
 }
 
+interface Callable {
+   void call(Digits digits);
+}
+
+class ChopLeft implements Callable {
+   public void call(Digits digits) {
+      digits.chopLeft();
+   }
+}
+
+class ChopRight implements Callable {
+   public void call(Digits digits) {
+      digits.chopRight();
+   }
+}
+
 public class euler_037
 {
-   static boolean isPalindrome(Digits digits, boolean chopLeft, Primes primes) {
+   static boolean isPalindrome(Digits digits, Callable callable, Primes primes) {
       Digits clone = new Digits(digits);
       for (int j = 0; j < digits.size()-1; j++) {
-         if (chopLeft)
-            clone.chopLeft();
-         else
-            clone.chopRight();
+         callable.call(clone);
          int number = clone.toInt();
          if (!primes.isPrime(number)) {
             return false;
@@ -115,9 +128,9 @@ public class euler_037
       for (int i = 11; i < MAX; i += 2) {
          if (primes.isPrime(i)) {
             Digits digits = new Digits(i);
-            boolean isPalindrome = isPalindrome(digits, true, primes);
+            boolean isPalindrome = isPalindrome(digits, new ChopLeft(), primes);
             if (isPalindrome) {
-               isPalindrome = isPalindrome(digits, false, primes);
+               isPalindrome = isPalindrome(digits, new ChopRight(), primes);
             }
 
             if (isPalindrome) {
