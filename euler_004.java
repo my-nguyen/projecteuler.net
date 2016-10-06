@@ -63,7 +63,7 @@ class euler_004
     return Integer.parseInt(forward + backward);
   }
 
-  // this method is based on http://www.optimized.dk/project-euler-problem-4/
+  // http://www.mathblog.dk/project-euler-problem-4/
   static int[] optimized(int target)
   {
     int[] result = new int[2];

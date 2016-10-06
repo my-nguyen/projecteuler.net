@@ -81,7 +81,7 @@ public class euler_035
 {
    static int mySolution() {
       final int MAX = 1000000;
-      // calculate all the primes number up the MAX
+      // build a table of all the primes number up to MAX
       Primes primes = new Primes(MAX);
       List<Integer> circulars = new ArrayList<>();
       for (int i = 2; i < MAX; i++) {
