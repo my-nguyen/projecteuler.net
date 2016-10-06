@@ -109,6 +109,9 @@ class ChopRight implements Callable {
 
 public class euler_037
 {
+   static final int MAX = 1000000;
+   static Primes primes = new Primes(MAX);
+
    static boolean isPalindrome(Digits digits, Callable callable, Primes primes) {
       Digits clone = new Digits(digits);
       for (int j = 0; j < digits.size()-1; j++) {
@@ -122,8 +125,6 @@ public class euler_037
    }
 
    static int mySolution() {
-      final int MAX = 1000000;
-      Primes primes = new Primes(MAX);
       int sum = 0;
       for (int i = 11; i < MAX; i += 2) {
          if (primes.isPrime(i)) {
@@ -142,7 +143,91 @@ public class euler_037
       return sum;
    }
 
+   static int mathBlog1() {
+      // the first prime to examine is 11, since 2, 3, 5, and 7 are not
+      // considered as truncatable primes
+      int i = 11;
+      int result = 0;
+      int count = 0;
+      // there's a total of 11 primes that are both truncatable from left to
+      // right and right to left.
+      while (count < 11) {
+         // right starts out with prime number 11
+         int right = i;
+         // left starts out with 0
+         int left = 0;
+         int multiplier = 1;
+         boolean isPrime = true;
+         while (right > 0 && isPrime) {
+            // store the last digit of right as the first digit of left
+            int lastDigit = right % 10;
+            left += multiplier * lastDigit;
+            // check if both left and right are prime numbers
+            isPrime = primes.isPrime(left) && primes.isPrime(right);
+            // remove last digit of right
+            right /= 10;
+            multiplier *= 10;
+         }
+
+         if (isPrime) {
+            count++;
+            result += i;
+         }
+         i++;
+      }
+      return result;
+   }
+
+   static int mathBlog2() {
+      int result = 0;
+      int count = 0;
+      Deque<Integer> list = new ArrayDeque<>();
+      // start with a small prime (3) and add digits to the beginning of it;
+      // therefore each time the newly composed number is both a prime and is
+      // truncatable from left to right
+      list.add(3);
+      list.add(7);
+      // digits to append to the front of a prime that's truncatable from left
+      // to right; 0, 4, 6 and 8 are eliminated because they will make the prime
+      // not truncatable from right to left
+      int[] appends = { 1, 2, 3, 5, 7, 9 };
+      // there's a total of 11 primes that are both truncatable from left to
+      // right and right to left.
+      while (count < 11) {
+         // start with a prime that's truncatable from left to right
+         int candidate = (int)list.pop();
+         if (primes.isPrime(candidate)) {
+            boolean isPrime = true;
+            int current = candidate;
+            int multiplier = 1;
+
+            // check if number is truncatable from right to left
+            while (current > 0) {
+               // check if truncated number is prime
+               isPrime = primes.isPrime(current) && isPrime;
+               // truncate from right
+               current /= 10;
+               multiplier *= 10;
+            }
+
+            // add to the result if a right-truncatable prime is found
+            if (isPrime && candidate > 10) {
+               result += candidate;
+               count += 1;
+            }
+
+            // generate new primes
+            for (int i = 0; i < appends.length; i++) {
+               list.add(multiplier * appends[i] + candidate);
+            }
+         }
+      }
+      return result;
+   }
+
    public static void main(String[] args) {
       System.out.println(mySolution());
+      System.out.println(mathBlog1());
+      System.out.println(mathBlog2());
    }
 }
